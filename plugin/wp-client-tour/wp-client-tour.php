@@ -22,10 +22,17 @@ define( 'WCT_OPTION_TEST_MODE', 'wct_test_mode' );
 require_once WCT_PLUGIN_DIR . 'includes/class-tour-loader.php';
 require_once WCT_PLUGIN_DIR . 'includes/class-tour-renderer.php';
 require_once WCT_PLUGIN_DIR . 'includes/class-admin-page.php';
+require_once WCT_PLUGIN_DIR . 'includes/class-update-checker.php';
+require_once WCT_PLUGIN_DIR . 'includes/class-dashboard-widget.php';
 
 add_action( 'admin_init', array( 'WCT_Tour_Renderer', 'init' ) );
 add_action( 'admin_menu', array( 'WCT_Admin_Page', 'register' ) );
 add_action( 'rest_api_init', array( 'WCT_Tour_Renderer', 'register_rest_routes' ) );
+add_action( 'plugins_loaded', array( 'WCT_Update_Checker', 'init' ) );
+
+if ( get_option( WCT_Dashboard_Widget::OPTION_KEY ) ) {
+	add_action( 'plugins_loaded', array( 'WCT_Dashboard_Widget', 'init' ) );
+}
 
 register_activation_hook(
 	__FILE__,

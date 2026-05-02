@@ -9,6 +9,12 @@ class WCT_Tour_Loader {
 	 * @return array Array of validated tour config arrays.
 	 */
 	public function get_eligible_tours(): array {
+		// Force branch: wct_force bypasses completion state (used by dashboard widget).
+		$forced = $this->maybe_get_forced_tour();
+		if ( null !== $forced ) {
+			return array( $forced );
+		}
+
 		// Resume branch: honour wct_resume + wct_step if present and valid.
 		$resumed = $this->maybe_get_resumed_tour();
 		if ( null !== $resumed ) {
@@ -37,6 +43,37 @@ class WCT_Tour_Loader {
 		}
 
 		return $eligible;
+	}
+
+	/**
+	 * If wct_force is present, return that tour ignoring completion state.
+	 * Role check is still enforced. Used by the dashboard widget launch links.
+	 *
+	 * @return array|null
+	 */
+	private function maybe_get_forced_tour(): ?array {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( empty( $_GET['wct_force'] ) ) {
+			return null;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$tour_id = sanitize_text_field( wp_unslash( $_GET['wct_force'] ) );
+		if ( ! preg_match( '/^[a-z0-9-]+$/', $tour_id ) ) {
+			return null;
+		}
+
+		foreach ( self::get_all_valid_tours() as $tour ) {
+			if ( $tour['id'] !== $tour_id ) {
+				continue;
+			}
+			if ( ! $this->matches_user_role( $tour ) ) {
+				return null;
+			}
+			return $tour;
+		}
+
+		return null;
 	}
 
 	/**

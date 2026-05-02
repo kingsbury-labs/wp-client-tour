@@ -159,7 +159,30 @@ h1 {
   background: var(--surface-2); transform: translateY(-1px);
 }
 
-.hero-meta { font-size: 13px; color: var(--text-dim); }
+.hero-badge-row { display: flex; justify-content: center; margin: 20px 0 12px; }
+
+.hero-version-badge {
+  display: inline-flex; align-items: center; gap: 0;
+  text-decoration: none;
+  border-radius: 5px; overflow: hidden;
+  border: 1px solid var(--border-strong);
+  font-size: 12px; font-weight: 500;
+  transition: border-color 0.15s;
+}
+.hero-version-badge:hover { border-color: rgba(255,255,255,0.28); }
+
+.hero-badge-label {
+  background: var(--surface-2); color: var(--text-muted);
+  padding: 4px 10px;
+  border-right: 1px solid var(--border-strong);
+}
+.hero-badge-version {
+  background: var(--accent-dim); color: var(--accent-light);
+  padding: 4px 10px;
+  font-family: var(--mono); font-size: 11.5px;
+}
+
+.hero-meta { font-size: 13px; color: var(--text-dim); margin-top: 6px; }
 .hero-meta a { color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
 .hero-meta a:hover { color: var(--accent-light); }
 
@@ -582,8 +605,8 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
       <span class="hero-eyebrow-dot"></span>
       Open source &nbsp;&middot;&nbsp; MIT License
     </div>
-    <h1>Write a tour once.<br>Your clients never call again.</h1>
-    <p class="hero-sub">WP Client Tour is a WordPress plugin that fires interactive guided overlays inside wp-admin. Drop a JSON file in the plugin folder. The right user sees the right tour, exactly once.</p>
+    <h1>Guided tours for your WordPress clients.</h1>
+    <p class="hero-sub">Drop a JSON file in the plugin folder. The right user sees the right tour, once. No support docs. No screen recordings. No hand-holding.</p>
     <div class="hero-ctas">
       <a href="https://github.com/kingsbury-labs/wp-client-tour" class="btn-primary" target="_blank" rel="noopener">
         &#8599;&nbsp; View on GitHub
@@ -592,9 +615,14 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
         Quick Install &darr;
       </a>
     </div>
+    <div class="hero-badge-row">
+      <a href="https://github.com/kingsbury-labs/wp-client-tour/releases" class="hero-version-badge" id="release-link" target="_blank" rel="noopener">
+        <span class="hero-badge-label">Latest release</span>
+        <span class="hero-badge-version" id="release-tag">v1.1.0</span>
+      </a>
+    </div>
     <p class="hero-meta">
-      Latest:&nbsp;<a href="https://github.com/kingsbury-labs/wp-client-tour/releases" id="release-link" target="_blank" rel="noopener"><span id="release-tag">v1.1.0</span></a>
-      &nbsp;&nbsp;&middot;&nbsp;&nbsp;PHP 7.4+
+      PHP 7.4+
       &nbsp;&nbsp;&middot;&nbsp;&nbsp;WordPress 6.0+
       &nbsp;&nbsp;&middot;&nbsp;&nbsp;Zero JS dependencies
     </p>

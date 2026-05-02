@@ -28,12 +28,16 @@ class WCT_Admin_Page {
 
 		self::handle_actions();
 
-		$tours     = WCT_Tour_Loader::get_all_valid_tours();
-		$test_mode = (bool) get_option( WCT_OPTION_TEST_MODE, false );
+		$tours          = WCT_Tour_Loader::get_all_valid_tours();
+		$test_mode      = (bool) get_option( WCT_OPTION_TEST_MODE, false );
+		$widget_enabled = (bool) get_option( WCT_Dashboard_Widget::OPTION_KEY, false );
 
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'WP Client Tour', 'wp-client-tour' ); ?></h1>
+			<h1>
+			<?php esc_html_e( 'WP Client Tour', 'wp-client-tour' ); ?>
+			<span style="font-size:13px;font-weight:400;color:#646970;margin-left:10px;">v<?php echo esc_html( WCT_VERSION ); ?></span>
+		</h1>
 
 			<?php self::render_notices(); ?>
 
@@ -70,20 +74,68 @@ class WCT_Admin_Page {
 				</table>
 			<?php endif; ?>
 
-			<h2><?php esc_html_e( 'Test Mode', 'wp-client-tour' ); ?></h2>
-			<p><?php esc_html_e( 'When enabled, all auto_once tours behave as auto_always — they will replay on every page load regardless of completion status.', 'wp-client-tour' ); ?></p>
+			<h2><?php esc_html_e( 'Settings', 'wp-client-tour' ); ?></h2>
 			<form method="post">
-				<?php wp_nonce_field( 'wct_toggle_test_mode', self::NONCE_FIELD ); ?>
-				<input type="hidden" name="wct_action" value="toggle_test_mode">
-				<label>
-					<input type="checkbox" name="wct_test_mode" value="1"<?php checked( $test_mode ); ?>>
-					<?php esc_html_e( 'Enable Test Mode', 'wp-client-tour' ); ?>
-				</label>
+				<?php wp_nonce_field( 'wct_save_settings', self::NONCE_FIELD ); ?>
+				<input type="hidden" name="wct_action" value="save_settings">
+				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Test Mode', 'wp-client-tour' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="wct_test_mode" value="1"<?php checked( $test_mode ); ?>>
+								<?php esc_html_e( 'Make all auto_once tours replay on every page load (useful during development)', 'wp-client-tour' ); ?>
+							</label>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'Dashboard Widget', 'wp-client-tour' ); ?></th>
+						<td>
+							<label>
+								<input type="checkbox" name="wct_dashboard_widget" value="1"<?php checked( $widget_enabled ); ?>>
+								<?php esc_html_e( 'Show a tour launcher on the WordPress Dashboard for users who have eligible tours', 'wp-client-tour' ); ?>
+							</label>
+						</td>
+					</tr>
+				</table>
 				<p class="submit">
-					<button type="submit" class="button button-secondary">
-						<?php esc_html_e( 'Save Test Mode Setting', 'wp-client-tour' ); ?>
+					<button type="submit" class="button button-primary">
+						<?php esc_html_e( 'Save Settings', 'wp-client-tour' ); ?>
 					</button>
 				</p>
+			</form>
+
+			<h2><?php esc_html_e( 'Updates', 'wp-client-tour' ); ?></h2>
+			<?php
+			$release = WCT_Update_Checker::get_latest_release();
+			$latest  = ( $release && ! empty( $release['tag_name'] ) ) ? ltrim( $release['tag_name'], 'v' ) : null;
+			if ( isset( $_GET['wct_refreshed'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				?>
+				<div class="notice notice-success inline"><p><?php esc_html_e( 'Update cache refreshed.', 'wp-client-tour' ); ?></p></div>
+			<?php endif; ?>
+			<p>
+				<?php
+				if ( $latest ) {
+					if ( version_compare( $latest, WCT_VERSION, '>' ) ) {
+						printf(
+							/* translators: %s: version number */
+							esc_html__( 'Version %s is available on GitHub.', 'wp-client-tour' ),
+							esc_html( $latest )
+						);
+					} else {
+						esc_html_e( 'You are running the latest version.', 'wp-client-tour' );
+					}
+				} else {
+					esc_html_e( 'Update status unavailable (GitHub API unreachable).', 'wp-client-tour' );
+				}
+				?>
+			</p>
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+				<?php wp_nonce_field( 'wct_refresh_update' ); ?>
+				<input type="hidden" name="action" value="wct_refresh_update">
+				<button type="submit" class="button button-secondary">
+					<?php esc_html_e( 'Check for Updates', 'wp-client-tour' ); ?>
+				</button>
 			</form>
 
 			<h2><?php esc_html_e( 'Reset Completion Data', 'wp-client-tour' ); ?></h2>
@@ -138,11 +190,16 @@ class WCT_Admin_Page {
 		}
 
 		switch ( $action ) {
-			case 'toggle_test_mode':
-				$enabled = isset( $_POST['wct_test_mode'] )
+			case 'save_settings':
+				$test_mode_enabled = isset( $_POST['wct_test_mode'] )
 					&& '1' === sanitize_text_field( wp_unslash( $_POST['wct_test_mode'] ) );
-				update_option( WCT_OPTION_TEST_MODE, $enabled ? '1' : '' );
-				self::add_notice( __( 'Test mode setting saved.', 'wp-client-tour' ) );
+				update_option( WCT_OPTION_TEST_MODE, $test_mode_enabled ? '1' : '' );
+
+				$widget_enabled = isset( $_POST['wct_dashboard_widget'] )
+					&& '1' === sanitize_text_field( wp_unslash( $_POST['wct_dashboard_widget'] ) );
+				update_option( WCT_Dashboard_Widget::OPTION_KEY, $widget_enabled ? '1' : '' );
+
+				self::add_notice( __( 'Settings saved.', 'wp-client-tour' ) );
 				break;
 
 			case 'reset_all':
@@ -176,9 +233,9 @@ class WCT_Admin_Page {
 	 */
 	private static function nonce_action_for( string $action ): ?string {
 		$map = array(
-			'toggle_test_mode' => 'wct_toggle_test_mode',
-			'reset_all'        => 'wct_reset_all',
-			'reset_user'       => 'wct_reset_user',
+			'save_settings' => 'wct_save_settings',
+			'reset_all'     => 'wct_reset_all',
+			'reset_user'    => 'wct_reset_user',
 		);
 		return $map[ $action ] ?? null;
 	}
