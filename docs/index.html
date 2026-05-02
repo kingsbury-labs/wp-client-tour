@@ -230,23 +230,56 @@ h1 {
 
 .demo-menu-item--woo {
   color: #dde1e7; position: relative;
-  animation: woo-highlight 9s ease-in-out infinite;
+  animation: woo-highlight 13s ease-in-out infinite;
 }
 @keyframes woo-highlight {
-  0%, 14%  { background: rgba(255,255,255,0.04); outline: none; }
-  20%, 84% {
+  0%, 12%  { background: rgba(255,255,255,0.04); outline: none; }
+  18%, 63% {
     background: rgba(34,113,177,0.22);
     outline: 2px solid rgba(255,255,255,0.65);
     outline-offset: -1px;
   }
-  90%, 100% { background: rgba(255,255,255,0.04); outline: none; }
+  68%, 100% { background: rgba(255,255,255,0.04); outline: none; }
 }
 
 .demo-menu-sub { padding: 4px 12px 4px 34px; font-size: 11px; color: #5d8fc7; white-space: nowrap; }
 .demo-menu-sub--active { background: rgba(34,113,177,0.18); color: #72aee6; }
 
 .demo-content { flex: 1; background: var(--wp-content); margin-top: 32px; position: relative; overflow: hidden; }
-.demo-content-inner { padding: 16px 18px; }
+.demo-content-inner { padding: 16px 18px; animation: content-p1 13s ease-in-out infinite; }
+@keyframes content-p1 {
+  0%, 63%   { opacity: 1; }
+  69%, 100% { opacity: 0; }
+}
+
+/* Page 2: fake post editor */
+.demo-content-p2 {
+  position: absolute; inset: 0; padding: 16px 18px;
+  opacity: 0; animation: content-p2 13s ease-in-out infinite;
+}
+@keyframes content-p2 {
+  0%, 63%  { opacity: 0; }
+  69%, 91% { opacity: 1; }
+  97%, 100% { opacity: 0; }
+}
+.demo-editor-wrap {
+  background: #fff; border: 1px solid #c3c4c7;
+  border-radius: 3px; overflow: hidden;
+}
+.demo-editor-title-in {
+  display: block; width: 100%; border: none; border-bottom: 1px solid #e0e0e0;
+  padding: 10px 12px; font-size: 15px; font-weight: 500;
+  color: #8c8f94; background: transparent; pointer-events: none;
+  font-family: inherit;
+}
+.demo-editor-toolbar {
+  padding: 6px 12px; border-bottom: 1px solid #e0e0e0;
+  font-size: 10px; color: #8c8f94; letter-spacing: 0.04em;
+  display: flex; gap: 14px;
+}
+.demo-editor-body {
+  padding: 12px; min-height: 80px; font-size: 11px; color: #b0b5bd;
+}
 .demo-page-title { font-size: 19px; font-weight: 600; color: #1d2327; margin-bottom: 14px; }
 
 .demo-add-btn {
@@ -278,13 +311,19 @@ h1 {
 .demo-overlay {
   position: absolute; inset: 0; background: rgba(0,0,0,0.62);
   z-index: 10; opacity: 0; pointer-events: none;
-  animation: overlay-anim 9s ease-in-out infinite;
+  animation: overlay-anim 13s ease-in-out infinite;
 }
 @keyframes overlay-anim {
-  0%, 14%   { opacity: 0; }
-  20%, 84%  { opacity: 1; }
-  90%, 100% { opacity: 0; }
+  0%, 12%   { opacity: 0; }
+  18%, 91%  { opacity: 1; }
+  97%, 100% { opacity: 0; }
 }
+
+/* URL bar cross-fade between pages */
+.demo-url-p1 { transition: opacity 0.4s; animation: url-p1 13s ease-in-out infinite; }
+.demo-url-p2 { position: absolute; left: 0; right: 0; text-align: center; opacity: 0; animation: url-p2 13s ease-in-out infinite; }
+@keyframes url-p1 { 0%, 63% { opacity: 1; } 69%, 100% { opacity: 0; } }
+@keyframes url-p2 { 0%, 63% { opacity: 0; } 69%, 91% { opacity: 1; } 97%, 100% { opacity: 0; } }
 
 .demo-modal {
   position: absolute; left: 170px; top: 48px; width: 256px;
@@ -292,7 +331,7 @@ h1 {
   box-shadow: 0 4px 28px rgba(0,0,0,0.3);
   padding: 15px 18px; z-index: 15; opacity: 0;
   transform: translateY(8px); pointer-events: none;
-  animation: modal-s1 9s ease-in-out infinite;
+  animation: modal-s1 13s ease-in-out infinite;
 }
 .demo-modal::before {
   content: ''; position: absolute; left: -7px; top: 24px;
@@ -301,17 +340,23 @@ h1 {
   border-bottom: 7px solid transparent;
   border-right: 7px solid #fff;
 }
-.demo-modal--s2 { top: 148px; animation: modal-s2 9s ease-in-out infinite; }
+.demo-modal--s2 { top: 148px; animation: modal-s2 13s ease-in-out infinite; }
+.demo-modal--s3 { top: 68px; animation: modal-s3 13s ease-in-out infinite; }
 
 @keyframes modal-s1 {
   0%, 18%   { opacity: 0; transform: translateY(8px); }
-  24%, 44%  { opacity: 1; transform: translateY(0); }
-  50%, 100% { opacity: 0; transform: translateY(0); }
+  24%, 40%  { opacity: 1; transform: translateY(0); }
+  46%, 100% { opacity: 0; transform: translateY(0); }
 }
 @keyframes modal-s2 {
-  0%, 50%   { opacity: 0; transform: translateY(8px); }
-  56%, 78%  { opacity: 1; transform: translateY(0); }
-  84%, 100% { opacity: 0; transform: translateY(0); }
+  0%, 46%   { opacity: 0; transform: translateY(8px); }
+  52%, 63%  { opacity: 1; transform: translateY(0); }
+  68%, 100% { opacity: 0; transform: translateY(0); }
+}
+@keyframes modal-s3 {
+  0%, 72%   { opacity: 0; transform: translateY(8px); }
+  78%, 89%  { opacity: 1; transform: translateY(0); }
+  95%, 100% { opacity: 0; transform: translateY(0); }
 }
 
 .demo-modal-step  { font-size: 10px; color: #a7aaad; margin-bottom: 7px; font-family: var(--mono); }
@@ -559,7 +604,7 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
 <!-- ── Demo ─────────────────────────────────────── -->
 <section id="demo">
   <div class="container">
-    <p class="demo-label">A tour firing on a WooCommerce Orders page &mdash; role-aware, auto-fires once, picks up where it left off across pages</p>
+    <p class="demo-label">A multi-page tour: steps 1&ndash;2 on the Orders page, then the tour navigates and resumes on a new page at step 3</p>
     <div class="demo-browser">
 
       <div class="demo-chrome">
@@ -568,7 +613,10 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
           <div class="demo-chrome-dot"></div>
           <div class="demo-chrome-dot"></div>
         </div>
-        <div class="demo-chrome-url">localhost/wp-admin/admin.php?page=wc-orders</div>
+        <div class="demo-chrome-url" style="position:relative;">
+          <span class="demo-url-p1">localhost/wp-admin/admin.php?page=wc-orders</span>
+          <span class="demo-url-p2">localhost/wp-admin/post-new.php?post_type=bh_event</span>
+        </div>
       </div>
 
       <div class="demo-wp">
@@ -636,12 +684,24 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
             </table>
           </div>
 
+          <!-- Page 2: fake post editor -->
+          <div class="demo-content-p2">
+            <div class="demo-page-title">Add New Event</div>
+            <div class="demo-editor-wrap">
+              <input class="demo-editor-title-in" type="text" placeholder="Add title" disabled>
+              <div class="demo-editor-toolbar">
+                <span>B</span><span>I</span><span>&#182;</span><span>&#8943;</span>
+              </div>
+              <div class="demo-editor-body">Start writing or type / to choose a block</div>
+            </div>
+          </div>
+
           <!-- Overlay dims content area during tour -->
           <div class="demo-overlay"></div>
 
           <!-- Modal: Step 1 -->
           <div class="demo-modal">
-            <div class="demo-modal-step">Step 1 of 5</div>
+            <div class="demo-modal-step">Step 1 of 4</div>
             <div class="demo-modal-title">Your WooCommerce Menu</div>
             <div class="demo-modal-body">Everything for your online store lives here. Click this any time to get back to your orders, products, and settings.</div>
             <div class="demo-modal-foot">
@@ -650,11 +710,22 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
             </div>
           </div>
 
-          <!-- Modal: Step 2 -->
+          <!-- Modal: Step 2 — navigate_on_next fires on click -->
           <div class="demo-modal demo-modal--s2">
-            <div class="demo-modal-step">Step 2 of 5</div>
-            <div class="demo-modal-title">Your Order List</div>
-            <div class="demo-modal-body">Each row is one customer order. You can see the order number, who placed it, the total, and the current status at a glance.</div>
+            <div class="demo-modal-step">Step 2 of 4</div>
+            <div class="demo-modal-title">Add a New Event</div>
+            <div class="demo-modal-body">Click Next and we'll take you straight to the event editor. The tour picks up right where it left off.</div>
+            <div class="demo-modal-foot">
+              <span class="demo-modal-skip">Skip tour</span>
+              <span class="demo-modal-next">Next: Add Event &rarr;</span>
+            </div>
+          </div>
+
+          <!-- Modal: Step 3 — resumes on page 2 -->
+          <div class="demo-modal demo-modal--s3">
+            <div class="demo-modal-step">Step 3 of 4</div>
+            <div class="demo-modal-title">Give Your Event a Title</div>
+            <div class="demo-modal-body">Start with the event name. The tour resumed right here from the previous page.</div>
             <div class="demo-modal-foot">
               <span class="demo-modal-skip">Skip tour</span>
               <span class="demo-modal-next">Next &rarr;</span>
@@ -953,7 +1024,7 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
           <tr>
             <td>1.1.0</td>
             <td>Multi-page tours &mdash; cross-page navigation via URL params, global step counter, cross-page Back</td>
-            <td><span class="vb vb-testing">In testing</span></td>
+            <td><span class="vb vb-released">Released</span></td>
           </tr>
           <tr>
             <td>1.2.0</td>
