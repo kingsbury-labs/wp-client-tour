@@ -389,6 +389,50 @@ h1 {
 .demo-modal-skip  { font-size: 11px; color: #a7aaad; }
 .demo-modal-next  { background: #2271b1; color: #fff; font-size: 11px; font-weight: 500; padding: 5px 12px; border-radius: 3px; }
 
+/* ── Why ──────────────────────────────────────── */
+#why { padding: 80px 0; }
+
+.why-body {
+  font-size: 1.025rem; color: var(--text-muted); line-height: 1.75;
+  margin-bottom: 20px;
+}
+.why-body a { color: var(--accent-light); text-decoration: none; }
+.why-body a:hover { text-decoration: underline; }
+
+.compare-table-wrap {
+  margin-top: 40px;
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+
+.compare-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.compare-table th, .compare-table td {
+  padding: 11px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.compare-table tbody tr:last-child td { border-bottom: none; }
+
+.compare-table thead th {
+  background: var(--surface-2);
+  color: var(--text-muted); font-weight: 600; font-size: 12px;
+  letter-spacing: 0.03em; text-transform: uppercase;
+}
+.compare-table thead th:first-child { width: 190px; }
+
+.compare-table tbody tr:nth-child(odd) td { background: var(--surface); }
+.compare-table tbody tr:nth-child(even) td { background: rgba(0,0,0,0.15); }
+.compare-table tbody td:first-child { color: var(--text-muted); font-weight: 500; }
+
+.ct-yes  { color: var(--green); }
+.ct-no   { color: var(--text-dim); }
+.ct-mid  { color: var(--text-muted); }
+
 /* ── How it works ─────────────────────────────── */
 #how { border-top: 1px solid var(--border); }
 
@@ -584,6 +628,7 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
       WP Client Tour
     </a>
     <div class="nav-links">
+      <a href="#why"      class="nav-link">Why</a>
       <a href="#how"      class="nav-link">How it works</a>
       <a href="#features" class="nav-link">Features</a>
       <a href="#schema"   class="nav-link">Schema</a>
@@ -763,6 +808,79 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
         </div><!-- /.demo-content -->
       </div><!-- /.demo-wp -->
     </div><!-- /.demo-browser -->
+  </div>
+</section>
+
+<!-- ── Why ───────────────────────────────────────── -->
+<section id="why">
+  <div class="container-narrow">
+    <div class="section-label">Why it exists</div>
+    <h2 class="section-title" style="text-align:left;">Built for one specific problem.</h2>
+    <p class="why-body">WordPress developers hand off sites to clients who don't know where anything is. The usual solutions are a screen-recorded video nobody watches, a Google Doc nobody opens, or a recurring support call you don't charge for. WP Client Tour is a different answer: a guided overlay that fires once, inside wp-admin, exactly when the client needs it.</p>
+    <p class="why-body">There are good general-purpose tour libraries like <a href="https://shepherdjs.dev" target="_blank" rel="noopener">Shepherd.js</a> and <a href="https://introjs.com" target="_blank" rel="noopener">Intro.js</a>, and SaaS products like Appcues and Intercom Product Tours. They're well-built tools for product teams building onboarding flows in their own apps. WP Client Tour isn't trying to compete with them on features. It's a narrower tool that solves a narrower problem: getting a client oriented in someone else's WordPress admin, with zero configuration overhead and no monthly fee.</p>
+
+    <div class="compare-table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>WP Client Tour</th>
+            <th>Shepherd / Intro.js</th>
+            <th>Appcues / SaaS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Cost</td>
+            <td class="ct-yes">Free, MIT</td>
+            <td class="ct-yes">Free, open source</td>
+            <td class="ct-no">$200&ndash;2,000+/mo</td>
+          </tr>
+          <tr>
+            <td>WordPress-native</td>
+            <td class="ct-yes">Yes &mdash; role-aware, WP meta, REST</td>
+            <td class="ct-mid">Needs custom integration</td>
+            <td class="ct-mid">JS snippet, no WP context</td>
+          </tr>
+          <tr>
+            <td>Setup</td>
+            <td class="ct-yes">Drop a JSON file</td>
+            <td class="ct-mid">Code per tour</td>
+            <td class="ct-yes">Visual editor</td>
+          </tr>
+          <tr>
+            <td>Multi-page tours</td>
+            <td class="ct-yes">Yes</td>
+            <td class="ct-no">No (page-bound)</td>
+            <td class="ct-yes">Yes</td>
+          </tr>
+          <tr>
+            <td>Works offline / no CDN</td>
+            <td class="ct-yes">Yes</td>
+            <td class="ct-mid">Depends on setup</td>
+            <td class="ct-no">No</td>
+          </tr>
+          <tr>
+            <td>Version-controllable tours</td>
+            <td class="ct-yes">Yes (flat JSON files)</td>
+            <td class="ct-yes">Yes (code)</td>
+            <td class="ct-no">Database / SaaS only</td>
+          </tr>
+          <tr>
+            <td>AI authoring</td>
+            <td class="ct-yes">Built-in Claude Code skill</td>
+            <td class="ct-no">No</td>
+            <td class="ct-mid">Some products, extra cost</td>
+          </tr>
+          <tr>
+            <td>Target audience</td>
+            <td class="ct-yes">WordPress developers</td>
+            <td class="ct-mid">Any web developer</td>
+            <td class="ct-mid">Product/marketing teams</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
