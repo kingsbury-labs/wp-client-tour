@@ -897,7 +897,7 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
           </tr>
           <tr>
             <td>Manual triggers / replay</td>
-            <td class="ct-mid">Dashboard widget <span class="ct-roadmap">v1.2 roadmap</span></td>
+            <td class="ct-yes">Admin bar, shortcode, PHP helper, dashboard widget</td>
             <td class="ct-no">No</td>
             <td class="ct-yes">Yes</td>
           </tr>
@@ -1046,6 +1046,17 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
         <p>Enable the Dashboard Widget in settings to give clients a central panel listing all their tours, with completion checkmarks and one-click Start and Replay buttons.</p>
       </div>
 
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polygon points="10 8 16 12 10 16 10 8"/>
+          </svg>
+        </div>
+        <h3>Manual triggers</h3>
+        <p>Set <span class="ic">trigger: "manual"</span> and launch tours on demand via the admin bar Tours menu, the <span class="ic">[wct_launch]</span> shortcode, or the <span class="ic">wct_tour_launch_url()</span> PHP helper. Ideal for help links and onboarding flows.</p>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1112,7 +1123,7 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
         </div>
         <div class="schema-field">
           <div class="schema-field-name"><code>trigger</code> <span class="badge badge-req">required</span></div>
-          <p><span class="ic">auto_once</span> fires once per user, then never again. <span class="ic">auto_always</span> fires on every matching page load &mdash; useful for documentation-style reference tours.</p>
+          <p><span class="ic">auto_once</span> fires once per user, then never again. <span class="ic">auto_always</span> fires on every matching page load. <span class="ic">manual</span> never fires automatically &mdash; launch via admin bar, <code>[wct_launch]</code> shortcode, or <code>wct_tour_launch_url()</code>.</p>
         </div>
         <div class="schema-field">
           <div class="schema-field-name"><code>navigate_on_next</code> <span class="badge badge-new">v1.1 &middot; optional</span></div>
@@ -1236,8 +1247,8 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
           </tr>
           <tr>
             <td>1.2.0</td>
-            <td>Manual triggers &mdash; replay buttons, help links, admin bar items that re-open any tour</td>
-            <td><span class="vb vb-planned">Planned</span></td>
+            <td>Manual triggers &mdash; admin bar Tours menu, <code>[wct_launch]</code> shortcode, <code>wct_tour_launch_url()</code> PHP helper, dashboard widget includes manual tours</td>
+            <td><span class="vb vb-released">Released</span></td>
           </tr>
           <tr>
             <td>1.3.0</td>

@@ -32,7 +32,7 @@ class WCT_Tour_Loader {
 			if ( ! $this->matches_current_page( $tour ) ) {
 				continue;
 			}
-			if ( ! $this->matches_user_role( $tour ) ) {
+			if ( ! self::matches_user_role( $tour ) ) {
 				continue;
 			}
 			if ( 'auto_once' === $tour['trigger'] && ! $test_mode && $this->user_has_completed( $tour['id'] ) ) {
@@ -67,7 +67,7 @@ class WCT_Tour_Loader {
 			if ( $tour['id'] !== $tour_id ) {
 				continue;
 			}
-			if ( ! $this->matches_user_role( $tour ) ) {
+			if ( ! self::matches_user_role( $tour ) ) {
 				return null;
 			}
 			return $tour;
@@ -113,7 +113,7 @@ class WCT_Tour_Loader {
 		}
 
 		// Still enforce role — users cannot resume tours they shouldn't see.
-		if ( ! $this->matches_user_role( $tour ) ) {
+		if ( ! self::matches_user_role( $tour ) ) {
 			return null;
 		}
 
@@ -133,9 +133,15 @@ class WCT_Tour_Loader {
 	 * @return array
 	 */
 	public static function get_all_valid_tours(): array {
+		static $cache = null;
+		if ( null !== $cache ) {
+			return $cache;
+		}
+
 		$files = glob( WCT_TOURS_DIR . '*.json' );
 		if ( empty( $files ) ) {
-			return array();
+			$cache = array();
+			return $cache;
 		}
 
 		$tours = array();
@@ -154,7 +160,8 @@ class WCT_Tour_Loader {
 			$tours[] = $tour;
 		}
 
-		return $tours;
+		$cache = $tours;
+		return $cache;
 	}
 
 	/**
@@ -218,7 +225,7 @@ class WCT_Tour_Loader {
 	 * @param array $tour Tour config.
 	 * @return bool
 	 */
-	private function matches_user_role( array $tour ): bool {
+	public static function matches_user_role( array $tour ): bool {
 		$user = wp_get_current_user();
 		if ( ! $user || ! $user->exists() ) {
 			return false;

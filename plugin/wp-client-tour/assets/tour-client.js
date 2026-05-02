@@ -57,6 +57,11 @@
 				renderStep( tour );
 				return;
 			}
+			// All selectors missing on this page — escalate for manual-trigger tours
+			// so developers see a clear signal in the console rather than silent nothing.
+			if ( tour.trigger === 'manual' ) {
+				console.error( '[WP Client Tour] Tour "' + tour.id + '" was launched but has no valid selectors on this page. Check that target_page and selectors match the current screen.' );
+			}
 			currentTourIndex++;
 		}
 	}

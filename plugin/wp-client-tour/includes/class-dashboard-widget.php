@@ -32,13 +32,10 @@ class WCT_Dashboard_Widget {
 		$completed  = get_user_meta( get_current_user_id(), WCT_META_KEY, true );
 		$completed  = is_array( $completed ) ? $completed : array();
 
-		// Filter to tours this user's role can see. Exclude manual trigger.
+		// Filter to tours this user's role can see. All trigger types shown.
 		$eligible = array_filter(
 			$all_tours,
 			static function ( $tour ) use ( $user ) {
-				if ( 'manual' === $tour['trigger'] ) {
-					return false;
-				}
 				foreach ( $tour['target_roles'] as $role ) {
 					if ( in_array( $role, (array) $user->roles, true ) ) {
 						return true;

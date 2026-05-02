@@ -229,7 +229,10 @@ wp-client-tour/
 ├── includes/
 │   ├── class-tour-loader.php      ← Reads + validates JSON, filters by page/role
 │   ├── class-tour-renderer.php    ← Outputs JS config to page head
-│   └── class-admin-page.php       ← Settings UI (Settings > WP Client Tour)
+│   ├── class-admin-page.php       ← Settings UI (Settings > WP Client Tour)
+│   ├── class-update-checker.php   ← GitHub update check (12h transient)
+│   ├── class-dashboard-widget.php ← Dashboard tour launcher widget
+│   └── class-manual-trigger.php   ← Admin bar, shortcode, PHP helper (v1.2)
 ├── assets/
 │   ├── tour-client.js             ← Vanilla JS renderer
 │   └── tour-client.css            ← All styles
@@ -408,7 +411,7 @@ Scope: Per WordPress user (update_user_meta / get_user_meta)
 |---|---|
 | `auto_once` | Fires automatically the first time an eligible user visits the target page. Never repeats after completion or dismissal. |
 | `auto_always` | Fires every page load. Used for development/testing only. |
-| `manual` | Only fires when triggered programmatically (Phase 2 feature — button/link trigger). |
+| `manual` | Never fires automatically. Only launches via `wct_force` URL param, the admin bar Tours menu, the `[wct_launch]` shortcode, or the `wct_tour_launch_url()` PHP helper. |
 
 ---
 
@@ -433,7 +436,7 @@ These are confirmed Phase 2 features. Do not build them in Phase 1:
 
 - Admin UI simplification (show/hide menu items per role)
 - Multi-page / cross-page tours (state persists across page navigations)
-- Manual trigger (button or link that fires a tour on demand)
+- ~~Manual trigger (button or link that fires a tour on demand)~~ — shipped in v1.2.0
 - Re-audit skill (checks existing tour selectors against live admin, flags broken ones)
 - Visual tour editor in wp-admin
 - Analytics or completion rate tracking

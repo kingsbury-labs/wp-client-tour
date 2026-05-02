@@ -123,7 +123,7 @@ The plugin handles the cross-page resume automatically via URL params.
 **`trigger` values:**
 - `auto_once` — fires once per user, then marks complete. Use this for onboarding tours.
 - `auto_always` — fires every time. Use for reference/documentation tours.
-- `manual` — reserved for a future version; currently skipped by the plugin.
+- `manual` — never fires automatically. Launched on demand via the admin bar Tours menu, `[wct_launch]` shortcode, or `wct_tour_launch_url()` PHP helper. Use for optional help tours and replay buttons.
 
 ### Step 6 — Output
 

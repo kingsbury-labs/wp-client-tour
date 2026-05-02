@@ -24,6 +24,7 @@ It has two parts:
 - [Authoring a Tour](#authoring-a-tour)
 - [Tour JSON Schema](#tour-json-schema)
 - [Plugin Settings](#plugin-settings)
+- [Manual Triggers](#manual-triggers)
 - [Filters & Hooks](#filters--hooks)
 - [REST API](#rest-api)
 - [Known Limitations](#known-limitations)
@@ -253,7 +254,7 @@ The skill screenshots the page, picks 3–7 elements that matter for the workflo
 
 - **`auto_once`** — Tour fires the first time a user with a matching role visits the matching page. Once they finish or skip it, it never fires for them again (unless reset via the admin page or unless Test Mode is on).
 - **`auto_always`** — Tour fires every time the page loads, regardless of completion state. Useful for documentation-style tours that should always be available.
-- **`manual`** — Currently a no-op. The plugin skips these tours entirely. Reserved for v1.2's manual trigger feature (button, link, admin bar item).
+- **`manual`** — Tour never fires automatically. It only launches when triggered by a URL with `wct_force=<id>`, via the admin bar, via the `[wct_launch]` shortcode, or by calling `wct_tour_launch_url()`. See [Manual Triggers](#manual-triggers).
 
 ### Validation rules
 
@@ -283,6 +284,47 @@ Go to **Settings → WP Client Tour** in wp-admin. The page provides:
 - **Reset User** — clear completion data for a single user by username. Shows a generic "Reset complete" message regardless of whether the user exists (avoids username enumeration).
 
 All actions require the `manage_options` capability and use per-action nonces.
+
+---
+
+## Manual Triggers
+
+Tours with `"trigger": "manual"` never fire automatically. They only launch when explicitly triggered. Three ways to do this:
+
+### 1. PHP helper function
+
+```php
+$url = wct_tour_launch_url( 'my-tour-id' );
+```
+
+Returns a full admin URL with `wct_force=my-tour-id` appended. Returns `false` if the tour ID doesn't exist. Use it to build your own buttons, menu items, or onboarding links anywhere in PHP.
+
+### 2. Shortcode
+
+```
+[wct_launch tour="my-tour-id" label="Take the tour"]
+```
+
+Renders a WP-native `<a class="button">` tag. Available anywhere in wp-admin (custom admin pages, metaboxes, etc.). The button only renders if the current user holds a role listed in the tour's `target_roles` — otherwise it outputs nothing.
+
+| Attribute | Required | Default |
+|---|---|---|
+| `tour` | yes | — |
+| `label` | no | "Start tour" |
+
+### 3. Admin bar
+
+Every `trigger: "manual"` tour eligible for the current user appears under a **Tours** menu in the WordPress admin bar. Tours the user has already completed show "(Replay)" appended to their label. The Tours menu is hidden entirely when no eligible manual tours exist for the current user.
+
+### 4. Direct URL
+
+Any link can launch a tour directly:
+
+```
+https://your-site.com/wp-admin/index.php?wct_force=my-tour-id
+```
+
+The tour launches regardless of completion state. Role check is still enforced — a user without the required role won't see the tour.
 
 ---
 
@@ -348,7 +390,7 @@ Marks a tour as completed for the current user. The plugin's JS calls this autom
 These are documented limits, not bugs.
 
 - **No tour authoring UI in the plugin.** Tours are JSON files. Use the AI skill or hand-write them.
-- **No manual triggers yet.** `trigger: "manual"` is a v1.2 feature; tours with that trigger are skipped today. The Dashboard Widget provides a partial workaround — users can replay any tour from the Dashboard without needing a manual trigger on the page itself.
+- **Manual trigger "nothing happened" is silent by design.** If a `trigger: "manual"` tour is launched but all its selectors are missing on the current page, no modal appears. A `console.error` is logged. A visible client-side message is planned for v1.3.0.
 - **Box-shadow highlight clips under `overflow: hidden` parents.** Visual-only failure on uncommon layouts. Re-targeting to an outer element is the workaround.
 - **Tour auto-chaining is unconditional.** If multiple eligible tours exist on one page, they fire back-to-back with no gap. Author tours so this doesn't happen, or set them to different roles.
 - **REST completion failures are silent.** If the network call to mark the tour complete fails (offline, expired nonce), the tour will replay on next page load. The browser console logs a warning.

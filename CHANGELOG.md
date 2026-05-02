@@ -10,6 +10,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.2.0] — 2026-05-02
+
+### Added
+- `trigger: "manual"` tours now fully supported — no longer skipped by the loader; they fire only via explicit launch
+- PHP helper `wct_tour_launch_url( $tour_id )` — returns an admin URL with `wct_force` param; returns `false` for unknown IDs; logs to `error_log()` when `WP_DEBUG` is on
+- `[wct_launch tour="id" label="text"]` shortcode — renders a WP-native button in any wp-admin context; role-checks before output; empty string for unknown tours or insufficient role
+- Admin bar **Tours** menu — lists all `trigger: "manual"` tours eligible for the current user; completed tours show "(Replay)"; parent node suppressed when no eligible tours exist; each node has a descriptive `aria-label`
+- `class-manual-trigger.php` — new class encapsulating all manual trigger logic; registered via `plugins_loaded`
+- Dashboard widget now includes `trigger: "manual"` tours alongside auto tours
+- `console.error` escalation in `tour-client.js` when a manually-triggered tour has no valid selectors on the current page
+
+### Changed
+- `WCT_Tour_Loader::matches_user_role()` changed from `private` to `public static` for use by shortcode and admin bar; no external API consumers at v1.x
+- `WCT_Tour_Loader::get_all_valid_tours()` now uses a static request-level cache to avoid repeated filesystem glob calls when multiple surfaces (admin bar, shortcode, widget) load tours in the same request
+
+### Known limitation
+- When a manually-triggered tour is launched but no selectors match the current page, the UI is silent (only `console.error` logged). A visible client-side fallback message is planned for v1.3.0.
+
+---
+
 ## [1.1.0] — 2026-05-02
 
 ### Added
