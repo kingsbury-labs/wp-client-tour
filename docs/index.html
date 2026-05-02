@@ -391,10 +391,6 @@ h1 {
 
 /* ── Why ──────────────────────────────────────── */
 #why { padding: 80px 0; }
-#why .section-desc {
-  max-width: 100%;
-  margin-bottom: 20px;
-}
 
 .why-prose {
   max-width: 680px; margin: 0 auto 40px;
@@ -402,8 +398,8 @@ h1 {
 }
 
 .why-body {
-  font-size: 1.025rem; color: var(--text-muted); line-height: 1.75;
-  margin-bottom: 20px;
+  font-size: 1.05rem; color: var(--text-muted); line-height: 1.75;
+  margin-bottom: 20px; width: 100%;
 }
 .why-body:last-child { margin-bottom: 0; }
 .why-body a { color: var(--accent-light); text-decoration: none; }
@@ -840,8 +836,8 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
   <div class="container">
     <div class="section-label">Why it exists</div>
     <h2 class="section-title">Built for one specific problem.</h2>
-    <p class="section-desc">WordPress developers hand off sites to clients who don't know where anything is. The usual solutions are a screen-recorded video nobody watches, a Google Doc nobody opens, or a recurring support call you don't charge for. WP Client Tour is a different answer: a guided overlay that fires once, inside wp-admin, exactly when the client needs it.</p>
-    <p class="section-desc">There are good general-purpose tour libraries like <a href="https://shepherdjs.dev" target="_blank" rel="noopener" style="color:var(--accent-light);text-decoration:none;">Shepherd.js</a> and <a href="https://introjs.com" target="_blank" rel="noopener" style="color:var(--accent-light);text-decoration:none;">Intro.js</a>, and SaaS products like Appcues and Intercom Product Tours. They're well-built tools for product teams building onboarding flows in their own apps. WP Client Tour isn't trying to compete with them on features. It's a narrower tool that solves a narrower problem: getting a client oriented in someone else's WordPress admin, with zero configuration overhead and no monthly fee.</p>
+    <p class="why-body">WordPress developers hand off sites to clients who don't know where anything is. The usual solutions are a screen-recorded video nobody watches, a Google Doc nobody opens, or a recurring support call you don't charge for. WP Client Tour is a different answer: a guided overlay that fires once, inside wp-admin, exactly when the client needs it.</p>
+    <p class="why-body">There are good general-purpose tour libraries like <a href="https://shepherdjs.dev" target="_blank" rel="noopener" style="color:var(--accent-light);text-decoration:none;">Shepherd.js</a> and <a href="https://introjs.com" target="_blank" rel="noopener" style="color:var(--accent-light);text-decoration:none;">Intro.js</a>, and SaaS products like Appcues and Intercom Product Tours. They're well-built tools for product teams building onboarding flows in their own apps. WP Client Tour isn't trying to compete with them on features. It's a narrower tool that solves a narrower problem: getting a client oriented in someone else's WordPress admin, with zero configuration overhead and no monthly fee.</p>
 
     <div class="compare-table-wrap">
       <table class="compare-table">
