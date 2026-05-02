@@ -1,0 +1,51 @@
+{
+  "id": "multipage-new-post",
+  "label": "Write Your First Post",
+  "target_page": "edit.php?post_type=post",
+  "target_roles": ["administrator", "editor", "author"],
+  "trigger": "auto_once",
+  "created": "2026-05-02",
+  "version": "1.1.0",
+  "steps": [
+    {
+      "id": "step-1",
+      "selector": ".wrap h1",
+      "position": "bottom",
+      "title": "Your Posts",
+      "body": "This is where all your blog posts live. Let's walk through creating your first one."
+    },
+    {
+      "id": "step-2",
+      "selector": ".page-title-action",
+      "position": "bottom",
+      "title": "Add a New Post",
+      "body": "Click Next and we'll take you to the post editor.",
+      "navigate_on_next": "post-new.php",
+      "navigate_label": "New Post"
+    },
+    {
+      "id": "step-3",
+      "target_page": "post-new.php",
+      "selector": "#title-prompt-text",
+      "position": "bottom",
+      "title": "Give Your Post a Title",
+      "body": "Start here. A clear, specific title helps readers and search engines understand what your post is about."
+    },
+    {
+      "id": "step-4",
+      "target_page": "post-new.php",
+      "selector": "#wp-content-editor-tools",
+      "position": "bottom",
+      "title": "Write Your Content",
+      "body": "This is the post editor. Write your content here. You can add images, links, and formatting using the toolbar above."
+    },
+    {
+      "id": "step-5",
+      "target_page": "post-new.php",
+      "selector": "#submitdiv",
+      "position": "left",
+      "title": "Publish When Ready",
+      "body": "Use the Publish box to save a draft, preview, or publish your post. You can also schedule it for a future date."
+    }
+  ]
+}

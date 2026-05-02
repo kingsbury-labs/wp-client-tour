@@ -48,11 +48,31 @@ class WCT_Tour_Renderer {
 			'wct-tour-client',
 			'wpClientTour',
 			array(
-				'tours'   => array_map( array( self::class, 'strip_tour_for_js' ), $tours ),
-				'nonce'   => wp_create_nonce( 'wp_rest' ),
-				'restUrl' => rest_url( 'wp-client-tour/v1/complete' ),
+				'tours'       => array_map( array( self::class, 'strip_tour_for_js' ), $tours ),
+				'nonce'       => wp_create_nonce( 'wp_rest' ),
+				'restUrl'     => rest_url( 'wp-client-tour/v1/complete' ),
+				'adminUrl'    => admin_url(),
+				'currentPage' => self::get_current_admin_page(),
 			)
 		);
+	}
+
+	/**
+	 * Build the current admin page string (file + query string, WCT params stripped).
+	 * Used by JS to match per-step target_page values for the dual-list model.
+	 *
+	 * @return string e.g. "edit.php?post_type=bh_event"
+	 */
+	private static function get_current_admin_page(): string {
+		global $pagenow;
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$params = $_GET;
+		unset( $params['wct_resume'], $params['wct_step'] );
+		if ( empty( $params ) ) {
+			return $pagenow;
+		}
+		$safe = array_map( 'sanitize_text_field', array_map( 'wp_unslash', $params ) );
+		return add_query_arg( $safe, $pagenow );
 	}
 
 	/**
@@ -65,22 +85,39 @@ class WCT_Tour_Renderer {
 	private static function strip_tour_for_js( array $tour ): array {
 		$steps = array_map(
 			static function ( $step ) {
-				return array(
+				$out = array(
 					'id'       => $step['id'],
 					'selector' => $step['selector'],
 					'position' => $step['position'],
 					'title'    => $step['title'],
 					'body'     => $step['body'],
 				);
+				if ( isset( $step['target_page'] ) ) {
+					$out['target_page'] = $step['target_page'];
+				}
+				if ( isset( $step['navigate_on_next'] ) ) {
+					$out['navigate_on_next'] = $step['navigate_on_next'];
+				}
+				if ( isset( $step['navigate_label'] ) ) {
+					$out['navigate_label'] = $step['navigate_label'];
+				}
+				return $out;
 			},
 			$tour['steps']
 		);
 
-		return array(
-			'id'      => $tour['id'],
-			'trigger' => $tour['trigger'],
-			'steps'   => $steps,
+		$out = array(
+			'id'         => $tour['id'],
+			'trigger'    => $tour['trigger'],
+			'targetPage' => $tour['target_page'],
+			'steps'      => $steps,
 		);
+
+		if ( isset( $tour['resumeStep'] ) ) {
+			$out['resumeStep'] = $tour['resumeStep'];
+		}
+
+		return $out;
 	}
 
 	/**

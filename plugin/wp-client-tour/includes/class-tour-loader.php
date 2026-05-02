@@ -9,6 +9,12 @@ class WCT_Tour_Loader {
 	 * @return array Array of validated tour config arrays.
 	 */
 	public function get_eligible_tours(): array {
+		// Resume branch: honour wct_resume + wct_step if present and valid.
+		$resumed = $this->maybe_get_resumed_tour();
+		if ( null !== $resumed ) {
+			return array( $resumed );
+		}
+
 		$tours     = self::get_all_valid_tours();
 		$eligible  = array();
 		$test_mode = (bool) get_option( WCT_OPTION_TEST_MODE, false );
@@ -31,6 +37,55 @@ class WCT_Tour_Loader {
 		}
 
 		return $eligible;
+	}
+
+	/**
+	 * If valid wct_resume + wct_step params are present, return the resumed tour
+	 * with resumeStep injected. Returns null if params are absent or invalid.
+	 *
+	 * @return array|null
+	 */
+	private function maybe_get_resumed_tour(): ?array {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( empty( $_GET['wct_resume'] ) || ! isset( $_GET['wct_step'] ) ) {
+			return null;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$tour_id = sanitize_text_field( wp_unslash( $_GET['wct_resume'] ) );
+		if ( ! preg_match( '/^[a-z0-9-]+$/', $tour_id ) ) {
+			return null;
+		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$step_index = (int) $_GET['wct_step'];
+		if ( $step_index < 0 ) {
+			return null;
+		}
+
+		$tour = null;
+		foreach ( self::get_all_valid_tours() as $candidate ) {
+			if ( $candidate['id'] === $tour_id ) {
+				$tour = $candidate;
+				break;
+			}
+		}
+
+		if ( null === $tour ) {
+			return null;
+		}
+
+		// Still enforce role — users cannot resume tours they shouldn't see.
+		if ( ! $this->matches_user_role( $tour ) ) {
+			return null;
+		}
+
+		if ( $step_index >= count( $tour['steps'] ) ) {
+			return null;
+		}
+
+		$tour['resumeStep'] = $step_index;
+		return $tour;
 	}
 
 	/**
@@ -188,7 +243,7 @@ class WCT_Tour_Loader {
 			return false;
 		}
 
-		$step_required = array( 'id', 'selector', 'position', 'title', 'body' );
+		$step_required   = array( 'id', 'selector', 'position', 'title', 'body' );
 		$valid_positions = array( 'top', 'right', 'bottom', 'left' );
 
 		foreach ( $tour['steps'] as $step ) {
@@ -203,8 +258,39 @@ class WCT_Tour_Loader {
 			if ( ! in_array( $step['position'], $valid_positions, true ) ) {
 				return false;
 			}
+			// Optional: navigate_on_next must be a safe relative admin path.
+			if ( isset( $step['navigate_on_next'] ) ) {
+				if ( ! is_string( $step['navigate_on_next'] ) || ! self::is_safe_relative_path( $step['navigate_on_next'] ) ) {
+					return false;
+				}
+			}
+			// Optional: per-step target_page must be a string.
+			if ( isset( $step['target_page'] ) && ! is_string( $step['target_page'] ) ) {
+				return false;
+			}
+			// Optional: navigate_label must be a string.
+			if ( isset( $step['navigate_label'] ) && ! is_string( $step['navigate_label'] ) ) {
+				return false;
+			}
 		}
 
+		return true;
+	}
+
+	/**
+	 * Ensure a path is a safe relative admin path.
+	 * Rejects absolute URLs, protocol-relative, javascript:, data:, and path traversal.
+	 *
+	 * @param string $path Path to check.
+	 * @return bool
+	 */
+	private static function is_safe_relative_path( string $path ): bool {
+		if ( preg_match( '#^(https?:|//|javascript:|data:)#i', $path ) ) {
+			return false;
+		}
+		if ( strpos( $path, '..' ) !== false ) {
+			return false;
+		}
 		return true;
 	}
 }

@@ -8,7 +8,7 @@
 	}
 
 	let currentTourIndex = 0;
-	let validSteps       = [];
+	let validSteps       = []; // Array of { step, globalIndex }
 	let currentValidIdx  = 0;
 	let overlay          = null;
 	let modal            = null;
@@ -25,6 +25,13 @@
 	// -------------------------------------------------------------------------
 
 	function init() {
+		// Clean resume params from URL so Back/forward navigation doesn't re-fire.
+		if ( window.location.search.indexOf( 'wct_resume' ) !== -1 ) {
+			const url = new URL( window.location.href );
+			url.searchParams.delete( 'wct_resume' );
+			url.searchParams.delete( 'wct_step' );
+			history.replaceState( null, '', url.toString() );
+		}
 		startNextTour();
 	}
 
@@ -38,6 +45,15 @@
 			validSteps = computeValidSteps( tour );
 			if ( validSteps.length > 0 ) {
 				currentValidIdx = 0;
+				// If resuming, seek to the matching global step index.
+				if ( tour.resumeStep !== undefined ) {
+					for ( let i = 0; i < validSteps.length; i++ ) {
+						if ( validSteps[ i ].globalIndex === tour.resumeStep ) {
+							currentValidIdx = i;
+							break;
+						}
+					}
+				}
 				renderStep( tour );
 				return;
 			}
@@ -45,13 +61,31 @@
 		}
 	}
 
+	/**
+	 * Build the dual-list model for a tour.
+	 *
+	 * Returns only steps that belong to the current page AND have a live DOM
+	 * selector. Steps on other pages are silently skipped (not broken — just
+	 * elsewhere). Each entry carries the step's index in tour.steps so the
+	 * global counter and cross-page navigation stay accurate.
+	 *
+	 * @param {Object} tour
+	 * @returns {Array<{step: Object, globalIndex: number}>}
+	 */
 	function computeValidSteps( tour ) {
 		const result = [];
 		for ( let i = 0; i < tour.steps.length; i++ ) {
-			if ( document.querySelector( tour.steps[ i ].selector ) ) {
-				result.push( tour.steps[ i ] );
+			const step     = tour.steps[ i ];
+			const stepPage = step.target_page || tour.targetPage;
+
+			if ( stepPage !== config.currentPage ) {
+				continue; // on a different page — not missing, just not here
+			}
+
+			if ( document.querySelector( step.selector ) ) {
+				result.push( { step: step, globalIndex: i } );
 			} else {
-				console.warn( '[WP Client Tour] Selector not found, skipping step:', tour.steps[ i ].selector );
+				console.warn( '[WP Client Tour] Selector not found, skipping step:', step.selector );
 			}
 		}
 		return result;
@@ -62,7 +96,8 @@
 	// -------------------------------------------------------------------------
 
 	function renderStep( tour ) {
-		const step   = validSteps[ currentValidIdx ];
+		const entry  = validSteps[ currentValidIdx ];
+		const step   = entry.step;
 		const target = document.querySelector( step.selector );
 
 		// Selector may have been removed since computeValidSteps ran (e.g. AJAX repaint).
@@ -120,6 +155,7 @@
 		}
 		target.style.zIndex    = '10000';
 		target.style.boxShadow = '0 0 0 9999px rgba(0, 0, 0, 0.72)';
+		target.classList.add( 'wct-pulse' );
 	}
 
 	function restoreTarget() {
@@ -129,6 +165,7 @@
 		highlightedEl.style.position  = savedStyles.position;
 		highlightedEl.style.zIndex    = savedStyles.zIndex;
 		highlightedEl.style.boxShadow = savedStyles.boxShadow;
+		highlightedEl.classList.remove( 'wct-pulse' );
 		highlightedEl = null;
 		savedStyles   = {};
 	}
@@ -142,9 +179,19 @@
 			modal.remove();
 		}
 
-		const totalValid = validSteps.length;
-		const isFirst    = currentValidIdx === 0;
-		const isLast     = currentValidIdx === totalValid - 1;
+		const entry       = validSteps[ currentValidIdx ];
+		const globalIdx   = entry.globalIndex;
+		const totalGlobal = tour.steps.length;
+
+		// First step globally = no back possible at all.
+		const isFirst = currentValidIdx === 0 && globalIdx === 0;
+		// Last step on this page = Done if no navigate_on_next, else navigate.
+		const isLast  = currentValidIdx === validSteps.length - 1 && ! step.navigate_on_next;
+
+		let nextLabel = 'Next';
+		if ( step.navigate_on_next ) {
+			nextLabel = 'Next' + ( step.navigate_label ? ': ' + escHtml( step.navigate_label ) : '' ) + ' →';
+		}
 
 		modal = document.createElement( 'div' );
 		modal.id   = 'wct-modal';
@@ -160,10 +207,10 @@
 			'<div class="wct-body" id="wct-body">' + escHtml( step.body ) + '</div>' +
 			'<div class="wct-footer">' +
 				( ! isFirst ? '<button type="button" class="wct-btn-secondary wct-back">Back</button>' : '<span></span>' ) +
-				'<span class="wct-counter">Step ' + ( currentValidIdx + 1 ) + ' of ' + totalValid + '</span>' +
+				'<span class="wct-counter">Step ' + ( globalIdx + 1 ) + ' of ' + totalGlobal + '</span>' +
 				( isLast
 					? '<button type="button" class="wct-btn-primary wct-finish">Done</button>'
-					: '<button type="button" class="wct-btn-primary wct-next">Next</button>'
+					: '<button type="button" class="wct-btn-primary wct-next">' + nextLabel + '</button>'
 				) +
 			'</div>' +
 			'<button type="button" class="wct-skip" aria-label="Skip tour">Skip</button>';
@@ -178,7 +225,7 @@
 
 		if ( ! isFirst ) {
 			modal.querySelector( '.wct-back' ).addEventListener( 'click', function () {
-				goToValidStep( tour, currentValidIdx - 1 );
+				goBack( tour );
 			} );
 		}
 
@@ -194,11 +241,56 @@
 	}
 
 	function advanceStep( tour ) {
+		const entry = validSteps[ currentValidIdx ];
+		const step  = entry.step;
+
+		if ( step.navigate_on_next ) {
+			navigateToNextPage( tour, entry );
+			return;
+		}
+
 		if ( currentValidIdx < validSteps.length - 1 ) {
 			goToValidStep( tour, currentValidIdx + 1 );
 		} else {
 			completeTour( tour );
 		}
+	}
+
+	function goBack( tour ) {
+		if ( currentValidIdx > 0 ) {
+			goToValidStep( tour, currentValidIdx - 1 );
+			return;
+		}
+
+		// Cross-page back: navigate to the previous global step's page.
+		const prevGlobalIndex = validSteps[ 0 ].globalIndex - 1;
+		if ( prevGlobalIndex < 0 ) {
+			return;
+		}
+		const prevStep = tour.steps[ prevGlobalIndex ];
+		const prevPage = prevStep.target_page || tour.targetPage;
+		window.location.href = buildResumeUrl( prevPage, tour.id, prevGlobalIndex );
+	}
+
+	function navigateToNextPage( tour, entry ) {
+		const nextGlobalIndex = entry.globalIndex + 1;
+		window.location.href = buildResumeUrl( entry.step.navigate_on_next, tour.id, nextGlobalIndex );
+	}
+
+	/**
+	 * Build a resume URL pointing at the given admin path with wct_resume + wct_step appended.
+	 * Resolves against config.adminUrl so subdirectory installs work correctly.
+	 *
+	 * @param {string} adminPath Relative admin path, e.g. "post-new.php?post_type=bh_event"
+	 * @param {string} tourId
+	 * @param {number} stepIndex Global step index to resume at.
+	 * @returns {string}
+	 */
+	function buildResumeUrl( adminPath, tourId, stepIndex ) {
+		// config.adminUrl ends with a trailing slash (WordPress convention).
+		const base = config.adminUrl + adminPath;
+		const sep  = base.indexOf( '?' ) !== -1 ? '&' : '?';
+		return base + sep + 'wct_resume=' + encodeURIComponent( tourId ) + '&wct_step=' + stepIndex;
 	}
 
 	function goToValidStep( tour, validIdx ) {
@@ -297,9 +389,9 @@
 			resizeRaf = window.requestAnimationFrame( function () {
 				resizeRaf = 0;
 				if ( modal && currentTarget && currentTour ) {
-					const step = validSteps[ currentValidIdx ];
-					if ( document.body.contains( currentTarget ) ) {
-						positionModal( modal, currentTarget, step.position );
+					const entry = validSteps[ currentValidIdx ];
+					if ( entry && document.body.contains( currentTarget ) ) {
+						positionModal( modal, currentTarget, entry.step.position );
 					}
 				}
 			} );
