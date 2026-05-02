@@ -517,6 +517,7 @@ h1 {
 .code-block {
   background: #0d1117; border: 1px solid var(--border);
   border-radius: var(--radius-lg); overflow: hidden;
+  min-width: 0;
 }
 .code-block-header {
   background: var(--surface); padding: 10px 16px;
@@ -621,13 +622,34 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
   .install-grid  { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
-  section { padding: 64px 0; }
-  #hero   { padding: 72px 0 48px; }
+  section        { padding: 56px 0; }
+  #hero          { padding: 60px 0 40px; }
+  #why           { padding: 56px 0; }
+
   .feature-grid  { grid-template-columns: 1fr; }
   .nav-links .nav-link { display: none; }
-  .demo-wp { height: 280px; }
+
+  /* Demo */
+  .demo-wp      { height: 280px; }
   .demo-sidebar { width: 130px; }
-  .demo-modal { left: 138px; width: 210px; }
+  .demo-modal   { left: 138px; width: 210px; }
+
+  /* Schema: let code block scroll horizontally instead of blowing out */
+  .code-block       { overflow-x: auto; overflow-y: hidden; }
+  .schema-layout > div { min-width: 0; }
+
+  /* Roadmap table: allow horizontal scroll */
+  .roadmap-table-wrap { overflow-x: auto; }
+
+  /* Compare table: tighten cell padding */
+  .compare-table th,
+  .compare-table td { padding: 9px 10px; font-size: 12.5px; }
+
+  /* Why body text: slightly smaller on mobile */
+  .why-body { font-size: 0.975rem; }
+
+  /* Reduce hero badge and meta clutter */
+  .hero-meta { font-size: 12px; }
 }
 
   </style>
