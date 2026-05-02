@@ -474,16 +474,12 @@ td:first-child { font-family: var(--mono); font-size: 13px; color: var(--text); 
 .vb-planned  { background: rgba(110,118,129,0.08); color: var(--text-muted);   border: 1px solid var(--border); }
 
 /* ── Footer ───────────────────────────────────── */
-footer { border-top: 1px solid var(--border); padding: 48px 0; }
+footer { border-top: 1px solid var(--border); padding: 32px 0; }
 
-.footer-inner { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
-.footer-brand { font-weight: 600; font-size: 15px; color: var(--text); display: block; margin-bottom: 6px; }
-.footer-meta  { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
-.footer-meta a { color: var(--accent-light); text-decoration: none; }
-.footer-meta a:hover { text-decoration: underline; }
-.footer-links { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
-.footer-link  { font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
-.footer-link:hover { color: var(--text); }
+.footer-inner { display: flex; align-items: center; justify-content: center; }
+.footer-meta  { font-size: 13px; color: var(--text-muted); text-align: center; }
+.footer-meta a { color: var(--text-muted); text-decoration: none; transition: color 0.15s; }
+.footer-meta a:hover { color: var(--accent-light); }
 
 /* ── Responsive ───────────────────────────────── */
 @media (max-width: 900px) {
@@ -500,7 +496,6 @@ footer { border-top: 1px solid var(--border); padding: 48px 0; }
   .demo-wp { height: 280px; }
   .demo-sidebar { width: 130px; }
   .demo-modal { left: 138px; width: 210px; }
-  .footer-inner { flex-direction: column; }
 }
 
   </style>
@@ -997,20 +992,9 @@ footer { border-top: 1px solid var(--border); padding: 48px 0; }
 <!-- ── Footer ───────────────────────────────────── -->
 <footer>
   <div class="container footer-inner">
-    <div>
-      <span class="footer-brand">WP Client Tour</span>
-      <div class="footer-meta">
-        MIT License &nbsp;&middot;&nbsp;
-        Built by <a href="https://kingsburycreative.com" target="_blank" rel="noopener">Rob Kingsbury</a>, Arnprior, Ontario &nbsp;&middot;&nbsp;
-        Co-developed with <a href="https://anthropic.com/claude" target="_blank" rel="noopener">Claude</a> (Anthropic)
-      </div>
-    </div>
-    <div class="footer-links">
-      <a href="https://github.com/kingsbury-labs/wp-client-tour" class="footer-link" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://github.com/kingsbury-labs/wp-client-tour/issues" class="footer-link" target="_blank" rel="noopener">Issues</a>
-      <a href="https://github.com/kingsbury-labs/wp-client-tour/releases" class="footer-link" target="_blank" rel="noopener">Releases</a>
-      <a href="https://github.com/kingsbury-labs/wp-client-tour/blob/main/ROADMAP.md" class="footer-link" target="_blank" rel="noopener">Roadmap</a>
-      <a href="https://kingsburycreative.com" class="footer-link" target="_blank" rel="noopener">Kingsbury Creative</a>
+    <div class="footer-meta">
+      MIT License &nbsp;&middot;&nbsp;
+      Built by <a href="https://kingsburycreative.com" target="_blank" rel="noopener">Kingsbury Creative</a> in Canada &#127809;
     </div>
   </div>
 </footer>
