@@ -8,8 +8,37 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [1.1.0] — 2026-05-02
+
 ### Added
-- WordPress plugin (Phase 1 complete):
+- Multi-page tour support via URL param handoff (`wct_resume` + `wct_step`)
+- Loader resume branch: validates params, bypasses page-matching, injects `resumeStep`; role check still enforced
+- Per-step optional fields: `target_page`, `navigate_on_next`, `navigate_label`
+- `is_safe_relative_path()` validation rejects absolute URLs, protocol-relative paths, `javascript:`, `data:`, and path traversal in `navigate_on_next` values
+- Dual-list step model in JS: global step list (counter, resume token) + per-page DOM-validated subset (rendering)
+- Global step counter: "Step 3 of 8" across all pages of a multi-page tour
+- Cross-page Back navigation via URL params
+- "Next: [Label] →" button text when a step has `navigate_on_next` and `navigate_label`
+- `buildResumeUrl()` resolves against `config.adminUrl` for subdirectory WordPress installs
+- URL cleanup on resume page load: `history.replaceState` strips `wct_resume`/`wct_step` so Back/Forward don't re-fire
+- Pulse animation (CSS keyframe) on highlighted target elements
+- `adminUrl` and `currentPage` added to localized JS config object
+- `ROADMAP.md` with versioned feature plans
+- Example multi-page tour: `skill/examples/multipage-new-post.json` (Posts list → block editor)
+
+### Changed
+- `strip_tour_for_js()` now passes `targetPage` (tour level) and optional per-step `target_page`, `navigate_on_next`, `navigate_label`, `resumeStep`
+- `computeValidSteps()` refactored to dual-list model; returns `{ step, globalIndex }` pairs; steps on other pages silently skipped (no `console.warn`)
+- Step counter shows global position across all pages, not local position within current page
+
+---
+
+## [1.0.0] — 2026-05-01
+
+### Added
+- WordPress plugin (Phase 1):
   - Main plugin file with constants, hooks, activation hook for `tours/` directory
   - `WCT_Tour_Loader` — scans `tours/`, validates JSON schema, filters by `$pagenow` + query string + role + completion state, respects Test Mode
   - `WCT_Tour_Renderer` — enqueues vanilla JS/CSS, passes tour data via `wp_localize_script`, registers REST endpoint `POST /wp-client-tour/v1/complete`
@@ -20,21 +49,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Claude Code skill for AI-powered tour authoring (`skill/wp-client-tour.md`)
 - Three example tour JSON files (WooCommerce Orders, ACF Fields, Custom Dashboard)
 - Filter `wct_tours_dir` for relocating the tours directory outside the plugin folder
-- Constants `WCT_META_KEY` (`wct_completed_tours`) and `WCT_OPTION_TEST_MODE` (`wct_test_mode`)
+- Constants `WCT_META_KEY` and `WCT_OPTION_TEST_MODE`
 - REST endpoint validates that `tour_id` corresponds to an actual file before recording completion
-- Object-cache invalidation (`clean_user_cache`) after bulk reset
-- Per-action nonces (`wct_toggle_test_mode`, `wct_reset_all`, `wct_reset_user`)
-- Initial project structure, full specification (`SPEC.md`), comprehensive README
+- Object-cache invalidation after bulk reset
+- Per-action nonces on all admin form submissions
+- Full specification (`SPEC.md`), README, MIT license
 
 ### Security
 - All form submissions guarded by per-action nonces and `manage_options` capability check
-- All `$_POST` reads pass through `wp_unslash` before sanitisation (WPCS-compliant)
+- All `$_POST` reads pass through `wp_unslash` before sanitisation
 - Reset User shows generic confirmation message (no username enumeration)
 - REST endpoint requires logged-in user; `tour_id` regex-validated and existence-checked
 
 ### Accessibility
-- Modal uses `role="dialog"`, `aria-modal="true"`, `aria-labelledby`, `aria-describedby`
-- Step title element has `aria-live="polite"` for screen-reader announcement on transitions
-- Focus trap on Tab/Shift+Tab
-- Escape key dismisses modal
-- All focusable elements have visible `:focus-visible` outline
+- Modal uses `role="dialog"`, `aria-modal`, `aria-labelledby`, `aria-describedby`
+- Step title has `aria-live="polite"` for screen-reader step announcements
+- Focus trap on Tab/Shift+Tab; Escape dismisses
+- All interactive elements have visible `:focus-visible` outline
