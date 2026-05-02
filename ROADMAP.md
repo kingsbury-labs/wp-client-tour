@@ -1,6 +1,19 @@
 # WP Client Tour — Roadmap
 
-This roadmap reflects planned and potential future work. Nothing here is scheduled; priorities shift based on feedback and usage.
+This file describes the planned direction for the project. Milestones and individual issues live on GitHub, where you can track progress, comment, and contribute.
+
+---
+
+## Versions at a glance
+
+| Version | Theme | Status | Milestone |
+|---------|-------|--------|-----------|
+| 1.0.0 | Core tour delivery | Released | — |
+| 1.1.0 | Multi-page tours | Code complete, testing | [Milestone 1](https://github.com/rob-kingsbury/wp-client-tour/milestone/1) |
+| 1.2.0 | Manual triggers | Planned | [Milestone 2](https://github.com/rob-kingsbury/wp-client-tour/milestone/2) |
+| 1.3.0 | Admin UI simplification | Planned | [Milestone 3](https://github.com/rob-kingsbury/wp-client-tour/milestone/3) |
+| 1.4.0 | Analytics | Planned | [Milestone 4](https://github.com/rob-kingsbury/wp-client-tour/milestone/4) |
+| 2.0.0 | Visual tour editor | Planned | [Milestone 5](https://github.com/rob-kingsbury/wp-client-tour/milestone/5) |
 
 ---
 
@@ -15,70 +28,73 @@ This roadmap reflects planned and potential future work. Nothing here is schedul
 
 ---
 
-## v1.1.0 — Multi-page tours (in progress)
+## v1.1.0 — Multi-page tours
 
-- Cross-page tour navigation via URL param handoff (`wct_resume` + `wct_step`)
-- Global step counter across pages
-- Cross-page Back navigation
-- "Next: [Page Name] →" label on navigation steps
-- Pulse animation on highlighted target elements
-- Per-step `target_page` and `navigate_on_next` fields in tour JSON schema
+Cross-page tour navigation. Steps can say "click Next to go to the Add New Event page" and the tour resumes exactly where it left off. Global step counter across pages. Cross-page Back.
+
+See [milestone 1](https://github.com/rob-kingsbury/wp-client-tour/milestone/1) for open tasks.
+
+**New JSON fields**
+```json
+{
+  "navigate_on_next": "post-new.php?post_type=bh_event",
+  "navigate_label": "Add New Event",
+  "target_page": "post-new.php?post_type=bh_event"
+}
+```
+
+**Known limitations**
+- Pages that redirect on load (some WooCommerce options, ACF options) strip URL params — tours targeting these as resume destinations will silently not resume.
+- AJAX-driven page transitions (Gutenberg, WooCommerce HPOS) don't fire `DOMContentLoaded`. `navigate_on_next` requires a full HTTP page load at the destination.
 
 ---
 
 ## v1.2.0 — Manual triggers
 
-- Trigger a tour from any link or button in wp-admin
-- `[wct-trigger tour="tour-id"]` shortcode for admin pages
-- `data-wct-trigger="tour-id"` HTML attribute support
-- Admin bar "Replay Tour" button (contextual, shown when a tour exists for the current page)
+Trigger a tour from any link, button, or admin bar item. Useful for "Replay Tour" buttons, help links inside plugin settings pages, and onboarding flows the user can re-open.
+
+See [milestone 2](https://github.com/rob-kingsbury/wp-client-tour/milestone/2) for open tasks.
 
 ---
 
 ## v1.3.0 — Admin UI simplification
 
-- Show or hide wp-admin menu items per user role
-- Config driven from JSON, same authoring workflow as tours
-- Reversible: changes are applied at render time, not saved to the database
+Show or hide wp-admin menu and submenu items per user role, configured in JSON. Applied at render time — no database changes, fully reversible.
+
+See [milestone 3](https://github.com/rob-kingsbury/wp-client-tour/milestone/3) for open tasks.
 
 ---
 
 ## v1.4.0 — Analytics
 
-- Track tour starts, completions, and skips per user and per tour
-- Simple admin dashboard with per-tour funnel (started / completed / dropped at step N)
-- CSV export
-- No external services — data stored in WordPress
+Track tour starts, completions, skips, and step-level drop-off in a local database table. Admin dashboard with per-tour funnel and CSV export. No external services.
+
+See [milestone 4](https://github.com/rob-kingsbury/wp-client-tour/milestone/4) for open tasks.
 
 ---
 
 ## v2.0.0 — Visual tour editor
 
-- Point-and-click tour builder inside wp-admin
-- Click an element on any admin page to capture its selector
-- Edit step copy inline
-- Preview tour without saving
-- Export to tour.json for version control
+Point-and-click tour builder inside wp-admin. Click any element to capture its selector, write step copy inline, preview the tour, export to JSON. No code required for basic tours.
+
+See [milestone 5](https://github.com/rob-kingsbury/wp-client-tour/milestone/5) for open tasks.
 
 ---
 
-## Backlog (no version assigned)
+## Backlog
 
-- **Front-end tours** — run tours on public-facing pages, not just wp-admin
-- **Multisite support** — network-level tours, per-site overrides
-- **Conditional steps** — show a step only if a condition is met (e.g. a plugin is active, a setting has a value)
-- **Tour chaining** — automatically start a follow-up tour after another completes
-- **Gutenberg compatibility** — tours targeting block editor UI (AJAX-driven, no full page load between steps)
-- **WooCommerce HPOS compatibility** — same challenge as Gutenberg for order management pages
-- **REST API for tour management** — CRUD tours via REST for headless or CI workflows
-- **WP-CLI commands** — `wp client-tour list`, `wp client-tour reset <user> <tour>`, etc.
-- **Selector confidence scoring** — warn when a tour's selectors haven't been verified against the current WP/plugin version
-- **WordPress.org plugin directory submission**
+Ideas tracked as issues but not yet assigned to a version. See [open backlog issues](https://github.com/rob-kingsbury/wp-client-tour/issues?q=is%3Aopen+label%3Abacklog).
+
+- Front-end tours (public-facing pages)
+- Multisite support
+- Conditional steps
+- Tour chaining
+- Gutenberg / WooCommerce HPOS compatibility
+- WP-CLI commands
+- WordPress.org plugin directory submission
 
 ---
 
-## Known limitations (document, not fix in v1.x)
+## Contributing
 
-- Pages that redirect on load (some WooCommerce options, ACF options pages) strip URL params. Tours targeting these as resume destinations will silently not resume.
-- AJAX-driven page transitions (Gutenberg, WooCommerce HPOS) do not fire `DOMContentLoaded`. `navigate_on_next` requires a full HTTP page load at the destination.
-- Subdirectory WordPress installs are handled via `config.adminUrl` — never string-concatenate admin paths in JS.
+Bug reports, feature requests, and pull requests are welcome. Check the [open issues](https://github.com/rob-kingsbury/wp-client-tour/issues) — items labelled `good first issue` or `help wanted` are good starting points.
