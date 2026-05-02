@@ -604,9 +604,10 @@ tbody td { padding: 14px 20px; color: var(--text-muted); font-size: 14px; vertic
 td:first-child { font-family: var(--mono); font-size: 13px; color: var(--text); font-weight: 500; white-space: nowrap; }
 
 .vb { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 100px; font-size: 12px; font-weight: 500; white-space: nowrap; }
-.vb-released { background: rgba(63,185,80,0.1);   color: var(--green);         border: 1px solid rgba(63,185,80,0.2); }
-.vb-testing  { background: rgba(34,113,177,0.12); color: var(--accent-light);  border: 1px solid rgba(34,113,177,0.22); }
+.vb-released { background: rgba(63,185,80,0.1);    color: var(--green);        border: 1px solid rgba(63,185,80,0.2); }
+.vb-testing  { background: rgba(34,113,177,0.12);  color: var(--accent-light); border: 1px solid rgba(34,113,177,0.22); }
 .vb-planned  { background: rgba(110,118,129,0.08); color: var(--text-muted);   border: 1px solid var(--border); }
+.vb-progress { background: rgba(255,189,46,0.1);   color: #c9922a;             border: 1px solid rgba(255,189,46,0.25); }
 
 /* ── Footer ───────────────────────────────────── */
 footer { border-top: 1px solid var(--border); padding: 32px 0; }
@@ -1330,6 +1331,14 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
   }, { rootMargin: '-40% 0px -50% 0px' });
 
   document.querySelectorAll('section[id]').forEach(function(s) { io.observe(s); });
+
+  // Automatically mark the first Planned roadmap row as In Progress.
+  // When a release ships, just flip its badge to vb-released — the next row promotes itself.
+  var firstPlanned = document.querySelector('.roadmap-table-wrap .vb-planned');
+  if (firstPlanned) {
+    firstPlanned.classList.replace('vb-planned', 'vb-progress');
+    firstPlanned.textContent = 'In Progress';
+  }
 </script>
 
 </body>
