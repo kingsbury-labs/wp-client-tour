@@ -332,7 +332,7 @@ These are documented limits, not bugs. Phase 2 may address some.
 
 Pull requests welcome. Please read [SPEC.md](SPEC.md) for the full architecture and constraints, and [CLAUDE.md](CLAUDE.md) for project rules (WPCS, vanilla JS only, no build step).
 
-Issues and feature requests via GitHub Issues (repo URL TBD).
+Issues and feature requests: [github.com/kingsbury-labs/wp-client-tour/issues](https://github.com/kingsbury-labs/wp-client-tour/issues)
 
 ---
 
