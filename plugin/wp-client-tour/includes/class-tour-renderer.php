@@ -67,7 +67,7 @@ class WCT_Tour_Renderer {
 		global $pagenow;
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$params = $_GET;
-		unset( $params['wct_resume'], $params['wct_step'] );
+		unset( $params['wct_resume'], $params['wct_step'], $params['wct_force'] );
 		if ( empty( $params ) ) {
 			return $pagenow;
 		}
