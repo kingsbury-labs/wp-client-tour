@@ -1,0 +1,51 @@
+{
+  "id": "custom-dashboard",
+  "version": "1.0",
+  "label": "Welcome to Your Dashboard",
+  "target_page": "index.php",
+  "target_roles": ["editor", "author"],
+  "trigger": "auto_once",
+  "created": "2026-05-01",
+  "steps": [
+    {
+      "id": "step-1",
+      "selector": "#adminmenu",
+      "position": "right",
+      "title": "Your Navigation Menu",
+      "body": "Everything you need to manage your website is in this left-hand menu. We've simplified it to show only what's relevant to you.",
+      "confidence": "high"
+    },
+    {
+      "id": "step-2",
+      "selector": "#menu-posts",
+      "position": "right",
+      "title": "Blog Posts",
+      "body": "Click here to write new blog posts, edit existing ones, or manage your categories and tags.",
+      "confidence": "high"
+    },
+    {
+      "id": "step-3",
+      "selector": "#menu-media",
+      "position": "right",
+      "title": "Media Library",
+      "body": "All the images, PDFs, and files you've uploaded to your site live here. You can search, organise, and upload new files any time.",
+      "confidence": "high"
+    },
+    {
+      "id": "step-4",
+      "selector": "#menu-pages",
+      "position": "right",
+      "title": "Pages",
+      "body": "Your website's main pages — About, Contact, Services, and so on — are managed here. You can edit their content but avoid changing their titles, as that can affect your URLs.",
+      "confidence": "high"
+    },
+    {
+      "id": "step-5",
+      "selector": "#wp-admin-bar-my-account",
+      "position": "bottom",
+      "title": "Your Account",
+      "body": "Click your name here to update your profile, change your password, or log out. Keep your password safe and don't share your login with anyone.",
+      "confidence": "high"
+    }
+  ]
+}

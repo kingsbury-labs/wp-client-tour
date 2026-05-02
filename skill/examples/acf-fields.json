@@ -1,0 +1,43 @@
+{
+  "id": "acf-custom-page",
+  "version": "1.0",
+  "label": "Editing Your Custom Page Content",
+  "target_page": "post.php",
+  "target_roles": ["editor"],
+  "trigger": "auto_once",
+  "created": "2026-05-01",
+  "steps": [
+    {
+      "id": "step-1",
+      "selector": "#titlediv",
+      "position": "bottom",
+      "title": "Page Title",
+      "body": "This is the main title that appears at the top of the page on your website. Keep it short and clear.",
+      "confidence": "high"
+    },
+    {
+      "id": "step-2",
+      "selector": "#acf-group_your_group_key",
+      "position": "top",
+      "title": "Your Page Content Fields",
+      "body": "These fields control the content that appears on this page. Each field has a label explaining what it's for — fill them in and click Update when you're done.",
+      "confidence": "medium"
+    },
+    {
+      "id": "step-3",
+      "selector": "#acf-group_your_group_key .acf-field-image",
+      "position": "right",
+      "title": "Page Image",
+      "body": "Click 'Add Image' to upload a new photo, or 'Edit Image' to replace the existing one. Use a landscape photo at least 1200px wide for best results.",
+      "confidence": "low"
+    },
+    {
+      "id": "step-4",
+      "selector": "#publish",
+      "position": "left",
+      "title": "Save Your Changes",
+      "body": "When you're happy with your edits, click Update to save and publish them to your live website immediately.",
+      "confidence": "high"
+    }
+  ]
+}

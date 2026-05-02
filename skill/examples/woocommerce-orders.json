@@ -1,0 +1,51 @@
+{
+  "id": "woocommerce-orders",
+  "version": "1.0",
+  "label": "WooCommerce Orders",
+  "target_page": "admin.php?page=wc-orders",
+  "target_roles": ["editor", "shop_manager"],
+  "trigger": "auto_once",
+  "created": "2026-05-01",
+  "steps": [
+    {
+      "id": "step-1",
+      "selector": "#toplevel_page_woocommerce",
+      "position": "right",
+      "title": "Your WooCommerce Menu",
+      "body": "Everything for your online store lives here. Click this any time to get back to your orders, products, and settings.",
+      "confidence": "high"
+    },
+    {
+      "id": "step-2",
+      "selector": "#woocommerce_page_wc-orders",
+      "position": "right",
+      "title": "Orders",
+      "body": "This is where new customer orders appear. When someone buys something from your site, it shows up here first.",
+      "confidence": "high"
+    },
+    {
+      "id": "step-3",
+      "selector": ".wc-orders-list-table",
+      "position": "top",
+      "title": "Your Order List",
+      "body": "Each row is one customer order. You can see the order number, who placed it, the total, and its current status at a glance.",
+      "confidence": "medium"
+    },
+    {
+      "id": "step-4",
+      "selector": ".order-status",
+      "position": "right",
+      "title": "Order Status",
+      "body": "This tells you where an order is in the process. 'Processing' means it's paid and waiting for you to ship it. 'Completed' means it's been fulfilled.",
+      "confidence": "medium"
+    },
+    {
+      "id": "step-5",
+      "selector": ".page-title-action",
+      "position": "bottom",
+      "title": "Create a Manual Order",
+      "body": "Need to add an order for a phone sale or in-person purchase? Use this button to create one manually.",
+      "confidence": "high"
+    }
+  ]
+}
