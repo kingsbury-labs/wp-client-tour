@@ -171,7 +171,7 @@ The skill screenshots the page, picks 3–7 elements that matter for the workflo
 ```json
 {
   "id": "woocommerce-orders",
-  "version": "1.0",
+  "version": "1.1",
   "label": "WooCommerce Orders",
   "target_page": "admin.php?page=wc-orders",
   "target_roles": ["editor", "shop_manager"],
@@ -183,7 +183,18 @@ The skill screenshots the page, picks 3–7 elements that matter for the workflo
       "selector": "#toplevel_page_woocommerce",
       "position": "right",
       "title": "Your Orders Menu",
-      "body": "Everything for your online store lives here. Click this any time to get back to your orders.",
+      "body": "Everything for your online store lives here. Click Next and we'll go to your orders.",
+      "navigate_on_next": "admin.php?page=wc-orders",
+      "navigate_label": "View Orders",
+      "confidence": "high"
+    },
+    {
+      "id": "step-2",
+      "target_page": "admin.php?page=wc-orders",
+      "selector": ".wc-orders-list-table",
+      "position": "top",
+      "title": "Your Order List",
+      "body": "Each row is one customer order. Click any order number to open it.",
       "confidence": "high"
     }
   ]
@@ -212,13 +223,16 @@ The skill screenshots the page, picks 3–7 elements that matter for the workflo
 | `position` | yes | enum | One of `top`, `right`, `bottom`, `left`. Preferred placement of the modal relative to the target. The renderer flips to the opposite side if it overflows the viewport, then centres if neither fits. |
 | `title` | yes | string | Heading shown in the modal. Recommended 3–6 words. |
 | `body` | yes | string | Description shown in the modal. Recommended 1–3 sentences in plain language. |
+| `target_page` | optional | string | Which admin page this step belongs to. Steps whose `target_page` doesn't match the current page are silently skipped during rendering. Required on steps after the first page in a multi-page tour. |
+| `navigate_on_next` | optional | string | Relative admin path (e.g. `post-new.php?post_type=bh_event`). When set, clicking Next navigates to this page and resumes the tour at the following step. Absolute URLs and path traversal are rejected. |
+| `navigate_label` | optional | string | Label shown on the Next button when `navigate_on_next` is set. The button reads "Next: [label] →". Falls back to plain "Next →" if omitted. |
 | `confidence` | optional | enum | One of `high`, `medium`, `low`. Authoring metadata only — not used at runtime. |
 
 ### Triggers
 
 - **`auto_once`** — Tour fires the first time a user with a matching role visits the matching page. Once they finish or skip it, it never fires for them again (unless reset via the admin page or unless Test Mode is on).
 - **`auto_always`** — Tour fires every time the page loads, regardless of completion state. Useful for documentation-style tours that should always be available.
-- **`manual`** — Currently a no-op (Phase 1). The plugin skips these tours entirely. Reserved for Phase 2's manual trigger feature (button, link, etc.).
+- **`manual`** — Currently a no-op. The plugin skips these tours entirely. Reserved for v1.2's manual trigger feature (button, link, admin bar item).
 
 ### Validation rules
 
@@ -310,8 +324,7 @@ Marks a tour as completed for the current user. The plugin's JS calls this autom
 These are documented limits, not bugs. Phase 2 may address some.
 
 - **No tour authoring UI in the plugin.** Tours are JSON files. Use the AI skill or hand-write them.
-- **No multi-page tours.** A tour is bound to a single admin page. Cross-page workflows require multiple separate tours.
-- **No manual triggers yet.** `trigger: "manual"` is a Phase 2 feature; tours with that trigger are skipped today.
+- **No manual triggers yet.** `trigger: "manual"` is a v1.2 feature; tours with that trigger are skipped today.
 - **Box-shadow highlight clips under `overflow: hidden` parents.** Visual-only failure on uncommon layouts. Re-targeting to an outer element is the workaround.
 - **Tour auto-chaining is unconditional.** If multiple eligible tours exist on one page, they fire back-to-back with no gap. Author tours so this doesn't happen, or set them to different roles.
 - **REST completion failures are silent.** If the network call to mark the tour complete fails (offline, expired nonce), the tour will replay on next page load. The browser console logs a warning.
