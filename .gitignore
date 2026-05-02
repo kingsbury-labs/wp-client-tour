@@ -18,3 +18,4 @@ plan-review.md
 # Tours are site-specific, not committed to the plugin repo
 plugin/wp-client-tour/tours/*
 !plugin/wp-client-tour/tours/.gitkeep
+scroll-analysis-output/
