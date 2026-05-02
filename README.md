@@ -254,11 +254,14 @@ You can see exactly what validates by reading [includes/class-tour-loader.php](p
 Go to **Settings → WP Client Tour** in wp-admin. The page provides:
 
 - **Tour table** — every JSON file in `tours/` that passes validation. Shows ID, label, target page, roles, step count, trigger, created date.
-- **Test Mode** — a toggle that makes all `auto_once` tours behave as `auto_always`. Lets you re-watch tours during development without resetting completion state.
+- **Settings form** — two toggles in one form:
+  - **Test Mode** — makes all `auto_once` tours behave as `auto_always`, replaying on every page load. Useful during development.
+  - **Dashboard Widget** — adds a tour launcher panel to the WordPress Dashboard for users with eligible tours. Shows completion status and Start / Replay buttons per tour.
+- **Updates** — shows whether a newer version is available on GitHub (checked via the GitHub API, cached for 12 hours). Includes a "Check for Updates" button to bust the cache.
 - **Reset All Users** — clears the `wct_completed_tours` user meta for every user. After clicking, every user will see every `auto_once` tour again on their next visit. Confirmation prompt before firing.
 - **Reset User** — clear completion data for a single user by username. Shows a generic "Reset complete" message regardless of whether the user exists (avoids username enumeration).
 
-Each form uses a per-action nonce. All actions require the `manage_options` capability.
+All actions require the `manage_options` capability and use per-action nonces.
 
 ---
 
@@ -321,10 +324,10 @@ Marks a tour as completed for the current user. The plugin's JS calls this autom
 
 ## Known Limitations
 
-These are documented limits, not bugs. Phase 2 may address some.
+These are documented limits, not bugs.
 
 - **No tour authoring UI in the plugin.** Tours are JSON files. Use the AI skill or hand-write them.
-- **No manual triggers yet.** `trigger: "manual"` is a v1.2 feature; tours with that trigger are skipped today.
+- **No manual triggers yet.** `trigger: "manual"` is a v1.2 feature; tours with that trigger are skipped today. The Dashboard Widget provides a partial workaround — users can replay any tour from the Dashboard without needing a manual trigger on the page itself.
 - **Box-shadow highlight clips under `overflow: hidden` parents.** Visual-only failure on uncommon layouts. Re-targeting to an outer element is the workaround.
 - **Tour auto-chaining is unconditional.** If multiple eligible tours exist on one page, they fire back-to-back with no gap. Author tours so this doesn't happen, or set them to different roles.
 - **REST completion failures are silent.** If the network call to mark the tour complete fails (offline, expired nonce), the tour will replay on next page load. The browser console logs a warning.
