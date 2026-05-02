@@ -1147,13 +1147,17 @@ footer { border-top: 1px solid var(--border); padding: 32px 0; }
 
       <div class="install-card">
         <div class="install-card-head">
-          <h3>Claude Code Skill</h3>
-          <p>One-time install. Available in every project after that. Requires Claude Code and Playwright MCP.</p>
+          <h3>AI Authoring</h3>
+          <p>Works with any LLM. Claude Code users get automated screenshots via Playwright MCP. Everyone else can use the standalone prompt.</p>
         </div>
         <div class="install-steps">
           <div class="install-step">
             <div class="install-step-num">1</div>
-            <div class="install-step-body">Copy the skill into your global Claude Code skills directory:</div>
+            <div class="install-step-body"><strong>Claude Code:</strong> copy the skill into your global skills directory (see README). Playwright MCP handles screenshots automatically.</div>
+          </div>
+          <div class="install-step">
+            <div class="install-step-num" style="opacity:0;"></div>
+            <div class="install-step-body"><strong>Any other LLM:</strong> paste <span class="ic">skill/prompt.md</span> as a system prompt or at the top of a new conversation. Share a screenshot of the target page for best results.</div>
           </div>
           <div class="install-step">
             <div class="install-step-num" style="opacity:0;"></div>

@@ -20,6 +20,7 @@ It has two parts:
 - [Installation](#installation)
   - [Plugin (any WordPress site)](#plugin-any-wordpress-site)
   - [Skill (Claude Code users only, one-time)](#skill-claude-code-users-only-one-time)
+- [Using a Different LLM](#using-a-different-llm)
 - [Authoring a Tour](#authoring-a-tour)
 - [Tour JSON Schema](#tour-json-schema)
 - [Plugin Settings](#plugin-settings)
@@ -107,6 +108,8 @@ After activating, go to **Settings > WP Client Tour** in wp-admin. You should se
 
 ### Skill (Claude Code users only, one-time)
 
+The authoring skill integrates with Claude Code's skill system and Playwright MCP for automated screenshots. If you use a different LLM (ChatGPT, Cursor, Copilot, Gemini, etc.), use `skill/prompt.md` instead — it's a standalone system prompt that works in any chat interface. See [Using a Different LLM](#using-a-different-llm) below.
+
 The authoring skill needs to be installed once into your global Claude Code skills directory. After that it's available in any project.
 
 **Windows (PowerShell):**
@@ -133,6 +136,24 @@ cp -r skill/examples ~/.claude/skills/wp-client-tour/examples
 To verify, open Claude Code in any project and try:
 
 > "Create a client tour for /wp-admin/edit.php"
+
+---
+
+## Using a Different LLM
+
+`skill/prompt.md` is a standalone authoring prompt that works in any LLM — ChatGPT, Cursor, GitHub Copilot Chat, Gemini, or anything else that accepts a system prompt or custom instructions.
+
+**To use it:**
+
+1. Open `skill/prompt.md` and copy its contents
+2. Paste it as a system prompt, custom instruction, or at the top of a new conversation
+3. Tell the LLM what page and workflow you want to tour
+
+Without Playwright MCP, the LLM can't screenshot the live page automatically. You can either:
+- Share a screenshot manually in the conversation
+- Describe the page and let the LLM produce the JSON with honest confidence flags for you to verify in DevTools
+
+The JSON output is identical — the plugin doesn't know or care which tool generated it.
 
 ---
 
