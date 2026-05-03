@@ -1,10 +1,10 @@
 ---
 project: wp-client-tour
-session: 10
+session: 11
 last_updated: 2026-05-03
-phase: "v1.2.2 stable. Clip-path overlay fix shipped. Demo GIF/MP4 added to repo and README."
-continue_with: "Verify clip-path highlight fix in-browser on both test sites. Clean up broken session 8 tags on GitHub (v1.2.2/v1.2.3 point at broken commits). Consider tagging HEAD as v1.2.2 properly."
-blockers: "GitHub tags v1.2.2 and v1.2.3 still point at broken session-8 commits. New v1.2.2 commit (39ac645) is live on main but untagged."
+phase: "v1.2.2 on main, untagged. Community health files added. Clip-path fix unverified in-browser."
+continue_with: "Verify clip-path highlight fix in-browser on both test sites. Fix broken GitHub tags (v1.2.2/v1.2.3 point at bad commits, tag HEAD as v1.2.2)."
+blockers: "GitHub tags v1.2.2 and v1.2.3 still point at broken session-8 commits."
 
 tech:
   product_name: WP Client Tour
@@ -41,14 +41,14 @@ tech:
 
 ## Recent sessions
 
+### Session 10 (2026-05-03): Community health files
+Added CONTRIBUTING.md and .github/ISSUE_TEMPLATE/bug_report.md. Community health was 37%. Checked traffic — no external visitors yet, all activity is owner.
+
 ### Session 9 (2026-05-03): Demo video, README embed
 Processed original screen recording into demo.gif (613KB, 800x592, 15fps) and demo.mp4 (228KB, 1280x952, 30fps, no audio, faststart). Embedded GIF in README between intro and Table of Contents. Committed and pushed all three files.
 
 ### Session 8 (2026-05-03): Broken patch attempts, clip-path fix shipped
 Multiple broken highlight patches (v1.2.2-v1.2.4) reverted. Clip-path overlay approach implemented in commit 39ac645 as new v1.2.2 — overlay cuts a hole at target bounding rect instead of lifting target z-index. GitHub tags v1.2.2/v1.2.3 still point at broken session-8 commits and need cleanup.
-
-### Session 7 (2026-05-02): v1.2.1 overlay/z-index fix
-Fixed overlay dimming, moved from box-shadow to #wct-overlay background. Added modal arrow groundwork. Tagged v1.2.1, synced both local installs.
 
 ## Reference
 

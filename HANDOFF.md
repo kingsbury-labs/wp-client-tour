@@ -1,8 +1,8 @@
 ---
 project: wp-client-tour
-session: 10
+session: 11
 last_updated: 2026-05-03
-continue_with: "Verify clip-path highlight fix in-browser on both test sites. Then fix the broken GitHub tags."
+continue_with: "Verify clip-path highlight fix in-browser on both test sites. Then fix broken GitHub tags."
 blockers: "GitHub tags v1.2.2 and v1.2.3 point at broken session-8 commits. HEAD (39ac645) is the correct v1.2.2 but is untagged."
 ---
 
@@ -10,7 +10,7 @@ blockers: "GitHub tags v1.2.2 and v1.2.3 point at broken session-8 commits. HEAD
 
 ## Status
 
-Session 9 was housekeeping: demo video processed and embedded in README. The clip-path fix (committed in 39ac645 at end of session 8) has not been browser-tested yet.
+Session 10 added community health files (CONTRIBUTING.md, bug report issue template). The clip-path fix (39ac645) is still unverified in-browser.
 
 ---
 
@@ -71,8 +71,8 @@ Then create a GitHub release for v1.2.2.
 
 ## Session Summaries
 
+### Session 10 (2026-05-03): Community health files
+Added CONTRIBUTING.md (stack constraints, PR workflow) and .github/ISSUE_TEMPLATE/bug_report.md. Community health score was 37% — both files improve it. No traffic from posts yet (all uniques=1, only May 2 activity).
+
 ### Session 9 (2026-05-03): Demo video, README embed
 Processed screen recording into demo.gif (613KB) and demo.mp4 (228KB). Embedded GIF in README between intro and Table of Contents. Committed and pushed.
-
-### Session 8 (2026-05-03): Broken patches, clip-path fix
-Multiple broken highlight patches reverted. Clip-path overlay approach implemented (39ac645) — overlay cuts a hole at target bounding rect. Not yet browser-tested. GitHub tags v1.2.2/v1.2.3 still point at bad commits.
