@@ -6,7 +6,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [Unreleased]
+## [1.2.2] — 2026-05-03
+
+### Fixed
+- Target element highlight now visible for all elements, including headings and other elements on white/light backgrounds. Previous approach lifted the target's z-index above the overlay, which exposed the element's white background as a bright rectangle punched through the dimmed overlay. New approach: `clip-path` polygon on `#wct-overlay` cuts a hole at the target's bounding rect, so the overlay dims everything around the target without touching the target's stacking context. No z-index changes on the highlighted element.
+- Overlay clip-path is recalculated on window resize so the hole tracks the target correctly after layout changes.
+- Plugin version constant corrected to match code state (was erroneously left at 1.2.4 after a revert).
 
 ---
 

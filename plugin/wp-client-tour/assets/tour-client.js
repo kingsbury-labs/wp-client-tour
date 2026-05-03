@@ -118,6 +118,7 @@
 		ensureOverlay();
 		highlightTarget( target );
 		target.scrollIntoView( { behavior: 'instant', block: 'nearest' } );
+		updateOverlayClip( target );
 		renderModal( tour, step, target );
 		ensureResizeHandler();
 	}
@@ -140,6 +141,32 @@
 			overlay.remove();
 			overlay = null;
 		}
+	}
+
+	function updateOverlayClip( target ) {
+		if ( ! overlay ) {
+			return;
+		}
+		const PAD = 12; // cover the pulse outline at its max offset (8px) + margin
+		const r   = target.getBoundingClientRect();
+		const vw  = window.innerWidth;
+		const vh  = window.innerHeight;
+		const t   = Math.max( 0, r.top    - PAD );
+		const b   = Math.min( vh, r.bottom + PAD );
+		const l   = Math.max( 0, r.left   - PAD );
+		const ri  = Math.min( vw, r.right  + PAD );
+		// Outer rect traced clockwise, inner rect traced counter-clockwise.
+		// With nonzero winding, the inner region cancels to transparent — a hole.
+		overlay.style.clipPath =
+			'polygon(' +
+			'0px 0px, ' + vw + 'px 0px, ' + vw + 'px ' + vh + 'px, ' +
+			'0px ' + vh + 'px, 0px 0px, ' +
+			l  + 'px ' + t + 'px, ' +
+			l  + 'px ' + b + 'px, ' +
+			ri + 'px ' + b + 'px, ' +
+			ri + 'px ' + t + 'px, ' +
+			l  + 'px ' + t + 'px' +
+			')';
 	}
 
 	// -------------------------------------------------------------------------
@@ -415,6 +442,7 @@
 				if ( modal && currentTarget && currentTour ) {
 					const entry = validSteps[ currentValidIdx ];
 					if ( entry && document.body.contains( currentTarget ) ) {
+						updateOverlayClip( currentTarget );
 						positionModal( modal, currentTarget, entry.step.position );
 					}
 				}
