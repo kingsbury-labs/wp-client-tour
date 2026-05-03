@@ -10,27 +10,6 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [1.2.4] — 2026-05-03
-
-### Fixed
-- `.wct-pulse` now uses `mix-blend-mode: multiply` so highlighted elements blend with the overlay instead of painting over it with a solid white background. Previously, elements lifted above the overlay via `z-index: 9999` appeared as bright white holes in the dimmed overlay rather than as highlighted targets. The blend mode preserves the overlay's dimming effect while keeping the element and its pulse outline visible.
-
----
-
-## [1.2.3] — 2026-05-03
-
-### Fixed
-- Pulse outline color changed from white to WP admin blue (`#2271b1`). The white outline was invisible against light-background elements (headings, content areas) that sit above the overlay. Blue is visible on both dark and light backgrounds.
-
----
-
-## [1.2.2] — 2026-05-03
-
-### Fixed
-- `.wct-pulse` now sets `z-index: 9999 !important` so highlighted target elements always render above the `#wct-overlay` (z-index 9998). Without this, elements with `position: relative` but no explicit z-index fell behind the overlay and became invisible during the tour.
-
----
-
 ## [1.2.1] — 2026-05-02
 
 ### Fixed
