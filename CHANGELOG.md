@@ -10,6 +10,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.2.3] — 2026-05-03
+
+### Fixed
+- Pulse outline color changed from white to WP admin blue (`#2271b1`). The white outline was invisible against light-background elements (headings, content areas) that sit above the overlay. Blue is visible on both dark and light backgrounds.
+
+---
+
 ## [1.2.2] — 2026-05-03
 
 ### Fixed
