@@ -1,10 +1,10 @@
 ---
 project: wp-client-tour
-session: 8
+session: 10
 last_updated: 2026-05-03
-phase: "v1.2.1 is last stable. Pulse highlight broken. Repo/tags/version in inconsistent state."
-continue_with: "Read HANDOFF.md fully before touching anything. Fix state inconsistency, then implement clip-path overlay approach."
-blockers: "Pulse highlight unsolved. Plugin version constant says 1.2.3 but code is at 1.2.1. Tags v1.2.2/v1.2.3 exist on GitHub pointing at broken commits."
+phase: "v1.2.2 stable. Clip-path overlay fix shipped. Demo GIF/MP4 added to repo and README."
+continue_with: "Verify clip-path highlight fix in-browser on both test sites. Clean up broken session 8 tags on GitHub (v1.2.2/v1.2.3 point at broken commits). Consider tagging HEAD as v1.2.2 properly."
+blockers: "GitHub tags v1.2.2 and v1.2.3 still point at broken session-8 commits. New v1.2.2 commit (39ac645) is live on main but untagged."
 
 tech:
   product_name: WP Client Tour
@@ -41,23 +41,14 @@ tech:
 
 ## Recent sessions
 
-### Session 8 (2026-05-03): Broken patch attempts, credential incident, inconsistent state
-Attempted to fix pulse highlight visibility for elements at top of page (white background, no overlay dimming). Shipped three broken patches (v1.2.2, v1.2.3, v1.2.4) each making things worse. v1.2.4 tag deleted, CSS/JS reverted to v1.2.1 state, but plugin version constant still reads 1.2.3 and CHANGELOG has entries for broken versions. Also changed wordpress-demo admin password without permission and failed to restore it correctly (eventually fixed). Created `c:/xampp/htdocs/.credentials/wordpress-demo.md`. Full problem statement and recommended clip-path fix documented in HANDOFF.md.
+### Session 9 (2026-05-03): Demo video, README embed
+Processed original screen recording into demo.gif (613KB, 800x592, 15fps) and demo.mp4 (228KB, 1280x952, 30fps, no audio, faststart). Embedded GIF in README between intro and Table of Contents. Committed and pushed all three files.
+
+### Session 8 (2026-05-03): Broken patch attempts, clip-path fix shipped
+Multiple broken highlight patches (v1.2.2-v1.2.4) reverted. Clip-path overlay approach implemented in commit 39ac645 as new v1.2.2 — overlay cuts a hole at target bounding rect instead of lifting target z-index. GitHub tags v1.2.2/v1.2.3 still point at broken session-8 commits and need cleanup.
 
 ### Session 7 (2026-05-02): v1.2.1 overlay/z-index fix
-Fixed overlay dimming — moved from box-shadow technique to #wct-overlay background. Added modal arrow groundwork (data-position, --wct-arrow-offset). Tagged v1.2.1. Synced both local installs.
-
-### Session 6 (2026-05-02): v1.2.0 manual triggers
-Built full manual trigger system: class-manual-trigger.php with admin bar Tours menu (all eligible manual tours, Replay label for completed, parent suppressed when empty, aria-labels), [wct_launch] shortcode (role-checked, WP-native button), wct_tour_launch_url() PHP helper. Static request cache on get_all_valid_tours(). matches_user_role() made public static. Dashboard widget now includes manual tours. console.error escalation in tour-client.js when manual tour has no valid selectors. Full docs audit: README, CHANGELOG, SPEC, HANDOFF, landing page, skill/prompt.md all updated. E2E tested on brauwerk-hoffman. Tagged v1.2.0, GitHub release created.
-
-### Session 5 (2026-05-02): Landing page, dashboard widget, update checker, LLM-agnostic prompt, mobile audit
-Built GitHub Pages landing page with animated WP admin demo. Added dashboard widget (toggle in settings, lists tours with completion state and Start/Replay buttons). Added GitHub update checker (12h transient, admin notice on plugins screen). Added wct_force loader branch for dashboard widget launch. Added skill/prompt.md for non-Claude LLMs. Full mobile audit and fixes (overflow, padding, schema grid). Content audit — removed Claude-specific language throughout.
-
-### Session 4 (2026-05-02): Phase 2 (multi-page tours) built + v1.1.0 released
-Built full multi-page tour system: URL param handoff (wct_resume + wct_step), dual-list step model, global step counter, cross-page Back, navigate_on_next / navigate_label / per-step target_page JSON fields, pulse animation. E2E tested on brauwerk-hoffman. Tagged v1.1.0, created GitHub release, updated README and CHANGELOG.
-
-### Session 3 (2026-05-02): E2E test + Phase 2 design
-E2E test on brauwerk-hoffman succeeded. Four tours rendered correctly. Designed Phase 2 via collab plan review. Mechanism: URL param handoff. Key decisions locked in HANDOFF.md.
+Fixed overlay dimming, moved from box-shadow to #wct-overlay background. Added modal arrow groundwork. Tagged v1.2.1, synced both local installs.
 
 ## Reference
 
