@@ -144,12 +144,14 @@
 
 /* Pulse animation on the highlighted target element */
 @keyframes wct-pulse {
-	0%   { outline: 3px solid rgba(34, 113, 177, 0.9); outline-offset: 3px; }
-	50%  { outline: 3px solid rgba(34, 113, 177, 0.3); outline-offset: 8px; }
-	100% { outline: 3px solid rgba(34, 113, 177, 0.9); outline-offset: 3px; }
+	0%   { outline: 3px solid rgba(34, 113, 177, 0.9) !important; outline-offset: 3px !important; }
+	50%  { outline: 3px solid rgba(34, 113, 177, 0.3) !important; outline-offset: 8px !important; }
+	100% { outline: 3px solid rgba(34, 113, 177, 0.9) !important; outline-offset: 3px !important; }
 }
 
 .wct-pulse {
 	animation: wct-pulse 1.6s ease-in-out infinite;
 	z-index: 9999 !important;
+	outline: 3px solid rgba(34, 113, 177, 0.9) !important;
+	mix-blend-mode: multiply;
 }

@@ -3,7 +3,7 @@
  * Plugin Name: WP Client Tour
  * Plugin URI:  https://github.com/kingsbury-labs/wp-client-tour
  * Description: AI-authored guided help tours for your clients inside wp-admin. Zero dependencies, role-aware, set-and-forget.
- * Version:     1.2.3
+ * Version:     1.2.4
  * Author:      Rob Kingsbury
  * Author URI:  https://kingsburycreative.com
  * License:     MIT
@@ -12,7 +12,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WCT_VERSION', '1.2.3' );
+define( 'WCT_VERSION', '1.2.4' );
 define( 'WCT_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WCT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WCT_TOURS_DIR', apply_filters( 'wct_tours_dir', WCT_PLUGIN_DIR . 'tours/' ) );

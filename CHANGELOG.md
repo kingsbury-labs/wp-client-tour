@@ -10,6 +10,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.2.4] — 2026-05-03
+
+### Fixed
+- `.wct-pulse` now uses `mix-blend-mode: multiply` so highlighted elements blend with the overlay instead of painting over it with a solid white background. Previously, elements lifted above the overlay via `z-index: 9999` appeared as bright white holes in the dimmed overlay rather than as highlighted targets. The blend mode preserves the overlay's dimming effect while keeping the element and its pulse outline visible.
+
+---
+
 ## [1.2.3] — 2026-05-03
 
 ### Fixed
