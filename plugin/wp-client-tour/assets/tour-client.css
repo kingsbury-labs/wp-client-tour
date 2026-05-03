@@ -151,4 +151,5 @@
 
 .wct-pulse {
 	animation: wct-pulse 1.6s ease-in-out infinite;
+	z-index: 9999 !important;
 }
