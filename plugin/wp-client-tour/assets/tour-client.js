@@ -149,17 +149,13 @@
 	function highlightTarget( target ) {
 		restoreTarget();
 		highlightedEl = target;
-		savedStyles = {
-			position:  target.style.position,
-			zIndex:    target.style.zIndex,
-			boxShadow: target.style.boxShadow,
-		};
-		// Only force position:relative on static elements; preserve fixed/absolute/sticky.
+		savedStyles   = { position: target.style.position };
+
+		// Only force position:relative on static elements so the pulse outline
+		// renders correctly. No z-index or box-shadow — the overlay handles dimming.
 		if ( getComputedStyle( target ).position === 'static' ) {
 			target.style.position = 'relative';
 		}
-		target.style.zIndex    = '10000';
-		target.style.boxShadow = '0 0 0 9999px rgba(0, 0, 0, 0.72)';
 		target.classList.add( 'wct-pulse' );
 	}
 
@@ -167,9 +163,7 @@
 		if ( ! highlightedEl ) {
 			return;
 		}
-		highlightedEl.style.position  = savedStyles.position;
-		highlightedEl.style.zIndex    = savedStyles.zIndex;
-		highlightedEl.style.boxShadow = savedStyles.boxShadow;
+		highlightedEl.style.position = savedStyles.position;
 		highlightedEl.classList.remove( 'wct-pulse' );
 		highlightedEl = null;
 		savedStyles   = {};
@@ -309,25 +303,28 @@
 	// -------------------------------------------------------------------------
 
 	function positionModal( el, target, preferred ) {
-		const gap  = 12;
-		const vw   = window.innerWidth;
-		const vh   = window.innerHeight;
-		const rect = target.getBoundingClientRect();
-		const mw   = el.offsetWidth  || 340;
-		const mh   = el.offsetHeight || 160;
+		const gap    = 12;
+		const arrow  = 7;  // arrow half-height/width in px
+		const margin = 8;
+		const vw     = window.innerWidth;
+		const vh     = window.innerHeight;
+		const rect   = target.getBoundingClientRect();
+		const mw     = el.offsetWidth  || 340;
+		const mh     = el.offsetHeight || 160;
 
 		const positions = {
-			top:    { top: rect.top  - mh - gap,                  left: rect.left + ( rect.width - mw ) / 2 },
-			bottom: { top: rect.bottom + gap,                     left: rect.left + ( rect.width - mw ) / 2 },
-			left:   { top: rect.top  + ( rect.height - mh ) / 2,  left: rect.left - mw - gap },
-			right:  { top: rect.top  + ( rect.height - mh ) / 2,  left: rect.right + gap },
+			top:    { top: rect.top  - mh - gap - arrow,                left: rect.left + ( rect.width  - mw ) / 2 },
+			bottom: { top: rect.bottom + gap + arrow,                   left: rect.left + ( rect.width  - mw ) / 2 },
+			left:   { top: rect.top  + ( rect.height - mh ) / 2,        left: rect.left - mw - gap - arrow },
+			right:  { top: rect.top  + ( rect.height - mh ) / 2,        left: rect.right + gap + arrow },
 		};
 
 		const opposite = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' };
 
 		function fits( pos ) {
 			const p = positions[ pos ];
-			return p.top >= 0 && p.left >= 0 && p.top + mh <= vh && p.left + mw <= vw;
+			return p.top >= margin && p.left >= margin &&
+				p.top + mh <= vh - margin && p.left + mw <= vw - margin;
 		}
 
 		let chosen = preferred;
@@ -335,21 +332,43 @@
 			chosen = opposite[ chosen ];
 		}
 
-		let top, left;
+		let top, left, centred = false;
 		if ( fits( chosen ) ) {
 			top  = positions[ chosen ].top;
 			left = positions[ chosen ].left;
 		} else {
-			top  = ( vh - mh ) / 2;
-			left = ( vw - mw ) / 2;
+			top     = ( vh - mh ) / 2;
+			left    = ( vw - mw ) / 2;
+			centred = true;
 		}
 
-		const margin = 8;
 		top  = Math.max( margin, Math.min( top,  vh - mh - margin ) );
 		left = Math.max( margin, Math.min( left, vw - mw - margin ) );
 
 		el.style.top  = top  + 'px';
 		el.style.left = left + 'px';
+
+		// Arrow: set data-position so CSS shows the right arrow face.
+		// Compute offset so the arrow tracks the target centre even when the
+		// modal has been clamped away from its ideal position.
+		if ( centred ) {
+			el.dataset.position = 'center';
+		} else {
+			el.dataset.position = chosen;
+
+			const minOff = 16; // keep arrow inside rounded corners
+			if ( chosen === 'left' || chosen === 'right' ) {
+				const targetCentreY = rect.top + rect.height / 2;
+				const rawOffset     = targetCentreY - top;
+				const clamped       = Math.max( minOff, Math.min( rawOffset, mh - minOff ) );
+				el.style.setProperty( '--wct-arrow-offset', clamped + 'px' );
+			} else {
+				const targetCentreX = rect.left + rect.width / 2;
+				const rawOffset     = targetCentreX - left;
+				const clamped       = Math.max( minOff, Math.min( rawOffset, mw - minOff ) );
+				el.style.setProperty( '--wct-arrow-offset', clamped + 'px' );
+			}
+		}
 	}
 
 	// -------------------------------------------------------------------------

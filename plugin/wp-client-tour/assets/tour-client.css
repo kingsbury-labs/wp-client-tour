@@ -4,9 +4,7 @@
 	position: fixed;
 	inset: 0;
 	z-index: 9998;
-	background: transparent;
-	/* pointer-events: auto so clicks on dimmed background don't reach underlying UI.
-	   Target (z-index 10000) and modal (10001) sit above and remain interactive. */
+	background: rgba(0, 0, 0, 0.72);
 	pointer-events: auto;
 }
 
@@ -99,6 +97,49 @@
 .wct-counter {
 	font-size: 12px;
 	color: #787c82;
+}
+
+/* Arrow pointing from modal toward its target element.
+   --wct-arrow-offset controls position along the relevant axis (set by JS).
+   Suppressed when the modal falls back to centred (data-position="center"). */
+#wct-modal::before {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 0;
+	border: 7px solid transparent;
+}
+
+#wct-modal[data-position="right"]::before {
+	right: 100%;
+	top: var(--wct-arrow-offset, 50%);
+	transform: translateY(-50%);
+	border-right-color: #fff;
+	border-left: none;
+}
+
+#wct-modal[data-position="left"]::before {
+	left: 100%;
+	top: var(--wct-arrow-offset, 50%);
+	transform: translateY(-50%);
+	border-left-color: #fff;
+	border-right: none;
+}
+
+#wct-modal[data-position="bottom"]::before {
+	bottom: 100%;
+	left: var(--wct-arrow-offset, 50%);
+	transform: translateX(-50%);
+	border-bottom-color: #fff;
+	border-top: none;
+}
+
+#wct-modal[data-position="top"]::before {
+	top: 100%;
+	left: var(--wct-arrow-offset, 50%);
+	transform: translateX(-50%);
+	border-top-color: #fff;
+	border-bottom: none;
 }
 
 /* Pulse animation on the highlighted target element */

@@ -10,6 +10,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [1.2.1] — 2026-05-02
+
+### Fixed
+- Overlay dimming now handled by `#wct-overlay` (set to `rgba(0,0,0,0.72)`) instead of the box-shadow highlight technique. The previous approach applied `box-shadow: 0 0 0 9999px` directly to the target element, which broke inside high z-index stacking contexts — most visibly when targeting elements inside `#wpadminbar` (z-index 99999), where the shadow painted over the modal.
+- `highlightTarget()` no longer manipulates `z-index` or `box-shadow` on the target element. The pulse animation remains the visual "look here" signal.
+- Modal arrow groundwork: `positionModal()` now sets `data-position` on the modal and computes a dynamic `--wct-arrow-offset` CSS custom property so arrows track the target centre correctly after viewport clamping. Arrow rendering is included but not visible by default — reserved for a future design pass.
+
+---
+
 ## [1.2.0] — 2026-05-02
 
 ### Added
