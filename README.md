@@ -9,6 +9,8 @@ It has two parts:
 - A **WordPress plugin** that reads JSON tour files and renders them as guided overlays in wp-admin. Zero dependencies, role-aware, set-and-forget.
 - An **AI authoring skill** (Claude Code) that screenshots a real wp-admin page, identifies the UI elements clients need help with, and produces the JSON for you. Optional — the plugin works fine with hand-written JSON too.
 
+![WP Client Tour in action](demo.gif)
+
 ---
 
 ## Table of Contents
