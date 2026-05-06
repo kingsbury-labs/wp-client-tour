@@ -10,8 +10,8 @@ class WCT_Admin_Page {
 	 */
 	public static function register(): void {
 		add_options_page(
-			__( 'WP Client Tour', 'wp-client-tour' ),
-			__( 'WP Client Tour', 'wp-client-tour' ),
+			__( 'WP Client Tour', 'client-tour' ),
+			__( 'WP Client Tour', 'client-tour' ),
 			'manage_options',
 			'wp-client-tour',
 			array( self::class, 'render_page' )
@@ -23,7 +23,7 @@ class WCT_Admin_Page {
 	 */
 	public static function render_page(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have permission to access this page.', 'wp-client-tour' ) );
+			wp_die( esc_html__( 'You do not have permission to access this page.', 'client-tour' ) );
 		}
 
 		self::handle_actions();
@@ -35,27 +35,27 @@ class WCT_Admin_Page {
 		?>
 		<div class="wrap">
 			<h1>
-			<?php esc_html_e( 'WP Client Tour', 'wp-client-tour' ); ?>
+			<?php esc_html_e( 'WP Client Tour', 'client-tour' ); ?>
 			<span style="font-size:13px;font-weight:400;color:#646970;margin-left:10px;">v<?php echo esc_html( WCT_VERSION ); ?></span>
 		</h1>
 
 			<?php self::render_notices(); ?>
 
-			<h2><?php esc_html_e( 'Tours', 'wp-client-tour' ); ?></h2>
+			<h2><?php esc_html_e( 'Tours', 'client-tour' ); ?></h2>
 
 			<?php if ( empty( $tours ) ) : ?>
-				<p><?php esc_html_e( 'No tours found. Add JSON tour files to the tours/ directory inside the plugin folder.', 'wp-client-tour' ); ?></p>
+				<p><?php esc_html_e( 'No tours found. Add JSON tour files to the tours/ directory inside the plugin folder.', 'client-tour' ); ?></p>
 			<?php else : ?>
 				<table class="widefat striped">
 					<thead>
 						<tr>
-							<th><?php esc_html_e( 'Tour ID', 'wp-client-tour' ); ?></th>
-							<th><?php esc_html_e( 'Label', 'wp-client-tour' ); ?></th>
-							<th><?php esc_html_e( 'Target Page', 'wp-client-tour' ); ?></th>
-							<th><?php esc_html_e( 'Roles', 'wp-client-tour' ); ?></th>
-							<th><?php esc_html_e( 'Steps', 'wp-client-tour' ); ?></th>
-							<th><?php esc_html_e( 'Trigger', 'wp-client-tour' ); ?></th>
-							<th><?php esc_html_e( 'Created', 'wp-client-tour' ); ?></th>
+							<th><?php esc_html_e( 'Tour ID', 'client-tour' ); ?></th>
+							<th><?php esc_html_e( 'Label', 'client-tour' ); ?></th>
+							<th><?php esc_html_e( 'Target Page', 'client-tour' ); ?></th>
+							<th><?php esc_html_e( 'Roles', 'client-tour' ); ?></th>
+							<th><?php esc_html_e( 'Steps', 'client-tour' ); ?></th>
+							<th><?php esc_html_e( 'Trigger', 'client-tour' ); ?></th>
+							<th><?php esc_html_e( 'Created', 'client-tour' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -74,44 +74,44 @@ class WCT_Admin_Page {
 				</table>
 			<?php endif; ?>
 
-			<h2><?php esc_html_e( 'Settings', 'wp-client-tour' ); ?></h2>
+			<h2><?php esc_html_e( 'Settings', 'client-tour' ); ?></h2>
 			<form method="post">
 				<?php wp_nonce_field( 'wct_save_settings', self::NONCE_FIELD ); ?>
 				<input type="hidden" name="wct_action" value="save_settings">
 				<table class="form-table" role="presentation">
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Test Mode', 'wp-client-tour' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Test Mode', 'client-tour' ); ?></th>
 						<td>
 							<label>
 								<input type="checkbox" name="wct_test_mode" value="1"<?php checked( $test_mode ); ?>>
-								<?php esc_html_e( 'Make all auto_once tours replay on every page load (useful during development)', 'wp-client-tour' ); ?>
+								<?php esc_html_e( 'Make all auto_once tours replay on every page load (useful during development)', 'client-tour' ); ?>
 							</label>
 						</td>
 					</tr>
 					<tr>
-						<th scope="row"><?php esc_html_e( 'Dashboard Widget', 'wp-client-tour' ); ?></th>
+						<th scope="row"><?php esc_html_e( 'Dashboard Widget', 'client-tour' ); ?></th>
 						<td>
 							<label>
 								<input type="checkbox" name="wct_dashboard_widget" value="1"<?php checked( $widget_enabled ); ?>>
-								<?php esc_html_e( 'Show a tour launcher on the WordPress Dashboard for users who have eligible tours', 'wp-client-tour' ); ?>
+								<?php esc_html_e( 'Show a tour launcher on the WordPress Dashboard for users who have eligible tours', 'client-tour' ); ?>
 							</label>
 						</td>
 					</tr>
 				</table>
 				<p class="submit">
 					<button type="submit" class="button button-primary">
-						<?php esc_html_e( 'Save Settings', 'wp-client-tour' ); ?>
+						<?php esc_html_e( 'Save Settings', 'client-tour' ); ?>
 					</button>
 				</p>
 			</form>
 
-			<h2><?php esc_html_e( 'Updates', 'wp-client-tour' ); ?></h2>
+			<h2><?php esc_html_e( 'Updates', 'client-tour' ); ?></h2>
 			<?php
 			$release = WCT_Update_Checker::get_latest_release();
 			$latest  = ( $release && ! empty( $release['tag_name'] ) ) ? ltrim( $release['tag_name'], 'v' ) : null;
 			if ( isset( $_GET['wct_refreshed'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 				?>
-				<div class="notice notice-success inline"><p><?php esc_html_e( 'Update cache refreshed.', 'wp-client-tour' ); ?></p></div>
+				<div class="notice notice-success inline"><p><?php esc_html_e( 'Update cache refreshed.', 'client-tour' ); ?></p></div>
 			<?php endif; ?>
 			<p>
 				<?php
@@ -119,14 +119,14 @@ class WCT_Admin_Page {
 					if ( version_compare( $latest, WCT_VERSION, '>' ) ) {
 						printf(
 							/* translators: %s: version number */
-							esc_html__( 'Version %s is available on GitHub.', 'wp-client-tour' ),
+							esc_html__( 'Version %s is available on GitHub.', 'client-tour' ),
 							esc_html( $latest )
 						);
 					} else {
-						esc_html_e( 'You are running the latest version.', 'wp-client-tour' );
+						esc_html_e( 'You are running the latest version.', 'client-tour' );
 					}
 				} else {
-					esc_html_e( 'Update status unavailable (GitHub API unreachable).', 'wp-client-tour' );
+					esc_html_e( 'Update status unavailable (GitHub API unreachable).', 'client-tour' );
 				}
 				?>
 			</p>
@@ -134,30 +134,30 @@ class WCT_Admin_Page {
 				<?php wp_nonce_field( 'wct_refresh_update' ); ?>
 				<input type="hidden" name="action" value="wct_refresh_update">
 				<button type="submit" class="button button-secondary">
-					<?php esc_html_e( 'Check for Updates', 'wp-client-tour' ); ?>
+					<?php esc_html_e( 'Check for Updates', 'client-tour' ); ?>
 				</button>
 			</form>
 
-			<h2><?php esc_html_e( 'Reset Completion Data', 'wp-client-tour' ); ?></h2>
+			<h2><?php esc_html_e( 'Reset Completion Data', 'client-tour' ); ?></h2>
 
 			<form method="post" style="margin-bottom: 24px;">
 				<?php wp_nonce_field( 'wct_reset_all', self::NONCE_FIELD ); ?>
 				<input type="hidden" name="wct_action" value="reset_all">
-				<p><?php esc_html_e( 'Clear completion data for every user. All tours marked as seen will appear again.', 'wp-client-tour' ); ?></p>
+				<p><?php esc_html_e( 'Clear completion data for every user. All tours marked as seen will appear again.', 'client-tour' ); ?></p>
 				<button type="submit" class="button button-secondary"
-					onclick="return confirm('<?php echo esc_js( __( 'Reset completion data for ALL users?', 'wp-client-tour' ) ); ?>')">
-					<?php esc_html_e( 'Reset All Users', 'wp-client-tour' ); ?>
+					onclick="return confirm('<?php echo esc_js( __( 'Reset completion data for ALL users?', 'client-tour' ) ); ?>')">
+					<?php esc_html_e( 'Reset All Users', 'client-tour' ); ?>
 				</button>
 			</form>
 
 			<form method="post">
 				<?php wp_nonce_field( 'wct_reset_user', self::NONCE_FIELD ); ?>
 				<input type="hidden" name="wct_action" value="reset_user">
-				<p><?php esc_html_e( 'Clear completion data for a specific user.', 'wp-client-tour' ); ?></p>
-				<label for="wct_username"><?php esc_html_e( 'Username:', 'wp-client-tour' ); ?></label>
+				<p><?php esc_html_e( 'Clear completion data for a specific user.', 'client-tour' ); ?></p>
+				<label for="wct_username"><?php esc_html_e( 'Username:', 'client-tour' ); ?></label>
 				<input type="text" id="wct_username" name="wct_username" class="regular-text" autocomplete="off">
 				<button type="submit" class="button button-secondary">
-					<?php esc_html_e( 'Reset User', 'wp-client-tour' ); ?>
+					<?php esc_html_e( 'Reset User', 'client-tour' ); ?>
 				</button>
 			</form>
 		</div>
@@ -173,7 +173,7 @@ class WCT_Admin_Page {
 		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-client-tour' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'client-tour' ) );
 		}
 
 		$action       = sanitize_key( wp_unslash( $_POST['wct_action'] ) );
@@ -186,7 +186,7 @@ class WCT_Admin_Page {
 		if ( ! isset( $_POST[ self::NONCE_FIELD ] )
 			|| ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ self::NONCE_FIELD ] ) ), $nonce_action )
 		) {
-			wp_die( esc_html__( 'Security check failed.', 'wp-client-tour' ) );
+			wp_die( esc_html__( 'Security check failed.', 'client-tour' ) );
 		}
 
 		switch ( $action ) {
@@ -199,12 +199,12 @@ class WCT_Admin_Page {
 					&& '1' === sanitize_text_field( wp_unslash( $_POST['wct_dashboard_widget'] ) );
 				update_option( WCT_Dashboard_Widget::OPTION_KEY, $widget_enabled ? '1' : '' );
 
-				self::add_notice( __( 'Settings saved.', 'wp-client-tour' ) );
+				self::add_notice( __( 'Settings saved.', 'client-tour' ) );
 				break;
 
 			case 'reset_all':
 				self::reset_all_users();
-				self::add_notice( __( 'Completion data cleared for all users.', 'wp-client-tour' ) );
+				self::add_notice( __( 'Completion data cleared for all users.', 'client-tour' ) );
 				break;
 
 			case 'reset_user':
@@ -212,7 +212,7 @@ class WCT_Admin_Page {
 					? sanitize_user( wp_unslash( $_POST['wct_username'] ) )
 					: '';
 				if ( '' === $username ) {
-					self::add_notice( __( 'Please enter a username.', 'wp-client-tour' ), 'error' );
+					self::add_notice( __( 'Please enter a username.', 'client-tour' ), 'error' );
 					break;
 				}
 				$user = get_user_by( 'login', $username );
@@ -220,7 +220,7 @@ class WCT_Admin_Page {
 					delete_user_meta( $user->ID, WCT_META_KEY );
 				}
 				// Generic message regardless of existence — avoids username enumeration.
-				self::add_notice( __( 'Reset complete.', 'wp-client-tour' ) );
+				self::add_notice( __( 'Reset complete.', 'client-tour' ) );
 				break;
 		}
 	}

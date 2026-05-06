@@ -18,7 +18,7 @@ class WCT_Dashboard_Widget {
 	public static function register_widget(): void {
 		wp_add_dashboard_widget(
 			'wct_tour_launcher',
-			__( 'Your Help Tours', 'wp-client-tour' ),
+			__( 'Your Help Tours', 'client-tour' ),
 			array( self::class, 'render_widget' )
 		);
 	}
@@ -46,7 +46,7 @@ class WCT_Dashboard_Widget {
 		);
 
 		if ( empty( $eligible ) ) {
-			echo '<p>' . esc_html__( 'No tours available for your account.', 'wp-client-tour' ) . '</p>';
+			echo '<p>' . esc_html__( 'No tours available for your account.', 'client-tour' ) . '</p>';
 			return;
 		}
 
@@ -90,7 +90,7 @@ class WCT_Dashboard_Widget {
 			printf(
 				'<a href="%s" class="button button-small wct-widget-start">%s</a>',
 				esc_url( $launch_url ),
-				esc_html( $is_done ? __( 'Replay', 'wp-client-tour' ) : __( 'Start', 'wp-client-tour' ) )
+				esc_html( $is_done ? __( 'Replay', 'client-tour' ) : __( 'Start', 'client-tour' ) )
 			);
 			echo '</li>';
 		}

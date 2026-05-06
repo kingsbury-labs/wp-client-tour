@@ -43,10 +43,10 @@ class WCT_Update_Checker {
 
 		printf(
 			'<div class="notice notice-info"><p><strong>%s</strong> — %s <a href="%s" target="_blank" rel="noopener">%s (v%s) &rarr;</a></p></div>',
-			esc_html__( 'WP Client Tour update available', 'wp-client-tour' ),
-			esc_html__( 'A new version is available on GitHub:', 'wp-client-tour' ),
+			esc_html__( 'WP Client Tour update available', 'client-tour' ),
+			esc_html__( 'A new version is available on GitHub:', 'client-tour' ),
 			esc_url( $release['html_url'] ),
-			esc_html__( 'Download', 'wp-client-tour' ),
+			esc_html__( 'Download', 'client-tour' ),
 			esc_html( $latest )
 		);
 	}
@@ -107,7 +107,7 @@ class WCT_Update_Checker {
 	 */
 	public static function handle_manual_refresh(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have permission to perform this action.', 'wp-client-tour' ) );
+			wp_die( esc_html__( 'You do not have permission to perform this action.', 'client-tour' ) );
 		}
 		check_admin_referer( 'wct_refresh_update' );
 		self::clear_cache();

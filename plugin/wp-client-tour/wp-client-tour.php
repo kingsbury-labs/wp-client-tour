@@ -7,7 +7,7 @@
  * Author:      Rob Kingsbury
  * Author URI:  https://kingsburycreative.com
  * License:     MIT
- * Text Domain: wp-client-tour
+ * Text Domain: client-tour
  */
 
 defined( 'ABSPATH' ) || exit;

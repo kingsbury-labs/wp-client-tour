@@ -48,7 +48,7 @@ class WCT_Manual_Trigger {
 		$atts = shortcode_atts(
 			array(
 				'tour'  => '',
-				'label' => __( 'Start tour', 'wp-client-tour' ),
+				'label' => __( 'Start tour', 'client-tour' ),
 			),
 			$atts,
 			'wct_launch'
@@ -129,7 +129,7 @@ class WCT_Manual_Trigger {
 		$wp_admin_bar->add_node(
 			array(
 				'id'    => 'wct-tours',
-				'title' => __( 'Tours', 'wp-client-tour' ),
+				'title' => __( 'Tours', 'client-tour' ),
 				'href'  => false,
 			)
 		);
@@ -139,12 +139,12 @@ class WCT_Manual_Trigger {
 			$is_done     = in_array( $tour['id'], $completed, true );
 			$title       = $is_done
 				/* translators: %s: tour label */
-				? sprintf( __( '%s (Replay)', 'wp-client-tour' ), esc_html( $label ) )
+				? sprintf( __( '%s (Replay)', 'client-tour' ), esc_html( $label ) )
 				: esc_html( $label );
 			$url         = self::get_launch_url( $tour['id'] );
 			$aria_label  = sprintf(
 				/* translators: %s: tour label */
-				__( 'Launch %s tour', 'wp-client-tour' ),
+				__( 'Launch %s tour', 'client-tour' ),
 				esc_attr( $label )
 			);
 
