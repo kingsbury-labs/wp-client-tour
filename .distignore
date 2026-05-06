@@ -1,0 +1,17 @@
+.git
+.gitignore
+.distignore
+.claude
+node_modules
+skill
+docs
+demo.gif
+demo.mp4
+*.mp4
+PLUGIN-CHECK-ISSUES.md
+SPEC.md
+ROADMAP.md
+HANDOFF.md
+CONTRIBUTING.md
+.github
+plugin/wp-client-tour/tours/.gitkeep

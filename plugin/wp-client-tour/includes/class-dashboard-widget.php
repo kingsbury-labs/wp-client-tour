@@ -77,17 +77,17 @@ class WCT_Dashboard_Widget {
 			$is_done   = in_array( $tour['id'], $completed, true );
 			$label     = esc_html( $tour['label'] ?? $tour['id'] );
 			$check_cls = $is_done ? 'wct-widget-check done' : 'wct-widget-check';
-			$checkmark = $is_done ? '&#10003;' : '';
+			$checkmark = $is_done ? '✓' : '';
 
 			// Build the launch URL: navigate to target_page with wct_force param.
 			$launch_url = esc_url( admin_url( $tour['target_page'] . ( strpos( $tour['target_page'], '?' ) !== false ? '&' : '?' ) . 'wct_force=' . rawurlencode( $tour['id'] ) ) );
 
 			echo '<li class="wct-widget-item">';
 			echo '<div class="wct-widget-item-left">';
-			printf( '<span class="%s">%s</span>', esc_attr( $check_cls ), $checkmark );
-			printf( '<span class="wct-widget-label" title="%s">%s</span>', esc_attr( $tour['label'] ?? $tour['id'] ), $label );
+			printf( '<span class="%s">%s</span>', esc_attr( $check_cls ), esc_html( $checkmark ) );
+			printf( '<span class="wct-widget-label" title="%s">%s</span>', esc_attr( $tour['label'] ?? $tour['id'] ), $label ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $label is esc_html()'d on assignment above
 			echo '</div>';
-			printf(
+			printf( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $launch_url is esc_url()'d on assignment above
 				'<a href="%s" class="button button-small wct-widget-start">%s</a>',
 				$launch_url,
 				esc_html( $is_done ? __( 'Replay', 'wp-client-tour' ) : __( 'Start', 'wp-client-tour' ) )

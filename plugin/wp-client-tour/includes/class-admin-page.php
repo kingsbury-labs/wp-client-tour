@@ -247,14 +247,14 @@ class WCT_Admin_Page {
 		global $wpdb;
 
 		// Collect affected user IDs before the delete so we can flush their caches afterward.
-		$user_ids = $wpdb->get_col( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+		$user_ids = $wpdb->get_col( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 			$wpdb->prepare(
 				"SELECT DISTINCT user_id FROM {$wpdb->usermeta} WHERE meta_key = %s",
 				WCT_META_KEY
 			)
 		);
 
-		$wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$wpdb->delete( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->usermeta,
 			array( 'meta_key' => WCT_META_KEY ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 			array( '%s' )
