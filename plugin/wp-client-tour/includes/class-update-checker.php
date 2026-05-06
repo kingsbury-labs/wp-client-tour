@@ -41,12 +41,11 @@ class WCT_Update_Checker {
 			return;
 		}
 
-		$url = esc_url( $release['html_url'] );
-		printf( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $url is esc_url()'d on assignment above
+		printf(
 			'<div class="notice notice-info"><p><strong>%s</strong> — %s <a href="%s" target="_blank" rel="noopener">%s (v%s) &rarr;</a></p></div>',
 			esc_html__( 'WP Client Tour update available', 'wp-client-tour' ),
 			esc_html__( 'A new version is available on GitHub:', 'wp-client-tour' ),
-			$url,
+			esc_url( $release['html_url'] ),
 			esc_html__( 'Download', 'wp-client-tour' ),
 			esc_html( $latest )
 		);

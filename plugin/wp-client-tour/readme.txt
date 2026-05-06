@@ -1,4 +1,4 @@
-=== WP Client Tour ===
+=== Client Tour ===
 Contributors: robkingsbury
 Tags: onboarding, guided tour, client handoff, help, training
 Requires at least: 6.0

@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WP Client Tour
+ * Plugin Name: Client Tour
  * Plugin URI:  https://github.com/kingsbury-labs/wp-client-tour
  * Description: AI-authored guided help tours for your clients inside wp-admin. Zero dependencies, role-aware, set-and-forget.
  * Version:     1.2.2

@@ -87,9 +87,9 @@ class WCT_Dashboard_Widget {
 			printf( '<span class="%s">%s</span>', esc_attr( $check_cls ), esc_html( $checkmark ) );
 			printf( '<span class="wct-widget-label" title="%s">%s</span>', esc_attr( $tour['label'] ?? $tour['id'] ), $label ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $label is esc_html()'d on assignment above
 			echo '</div>';
-			printf( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $launch_url is esc_url()'d on assignment above
+			printf(
 				'<a href="%s" class="button button-small wct-widget-start">%s</a>',
-				$launch_url,
+				esc_url( $launch_url ),
 				esc_html( $is_done ? __( 'Replay', 'wp-client-tour' ) : __( 'Start', 'wp-client-tour' ) )
 			);
 			echo '</li>';
