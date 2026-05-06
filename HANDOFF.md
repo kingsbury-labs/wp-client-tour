@@ -1,54 +1,55 @@
 ---
 project: wp-client-tour
-session: 11
-last_updated: 2026-05-03
-continue_with: "Verify clip-path highlight fix in-browser on both test sites. Then fix broken GitHub tags."
-blockers: "GitHub tags v1.2.2 and v1.2.3 point at broken session-8 commits. HEAD (39ac645) is the correct v1.2.2 but is untagged."
+session: 12
+last_updated: 2026-05-06
+continue_with: "Wait for WordPress.org review email. Address any reviewer feedback."
+blockers: "None. Plugin is submitted and awaiting review."
 ---
 
 # WP Client Tour — Handoff
 
 ## Status
 
-Session 10 added community health files (CONTRIBUTING.md, bug report issue template). The clip-path fix (39ac645) is still unverified in-browser.
+Plugin submitted to WordPress.org on 2026-05-06. Slug assigned: `client-tour`. Awaiting manual review (285 plugins in queue, 1-14 days).
+
+GitHub release v1.2.2 is live: https://github.com/kingsbury-labs/wp-client-tour/releases/tag/v1.2.2
 
 ---
 
-## Priority: Verify Clip-Path Fix
+## If the Reviewer Requests Changes
 
-The clip-path overlay approach was implemented in commit `39ac645` but never confirmed working in a real browser. Before tagging or releasing:
+Common reviewer requests and how to handle them:
 
-1. Sync both local installs to HEAD
-2. Log into wordpress-demo or brauwerk-hoffman as a user with a tour eligible
-3. Confirm the target element is surrounded by dark overlay (not a white hole)
-4. Confirm pulse outline is visible
-5. Test on an adminbar element, a page-body element, and a full-width heading if possible
+- **Security issue** — fix the flagged code, rebuild the zip, upload via the "Upload updated plugin" button on the submission page
+- **Slug conflict** — if `client-tour` is taken, choose a new slug (e.g. `guided-client-tour`, `wct-guided-tours`) and contact WordPress.org before they close the ticket
+- **Readme issues** — edit `plugin/wp-client-tour/readme.txt`, commit, rebuild zip, reupload
 
-Credentials: `c:/xampp/htdocs/.credentials/wordpress-demo.md` (password: `demo2026!`)
-
----
-
-## Tag Cleanup Needed
-
-GitHub tags `v1.2.2` and `v1.2.3` point at broken session-8 commits. The correct approach once the fix is verified:
-
+To rebuild the zip after any changes:
 ```bash
-# Delete the bad remote tags
-git push origin :refs/tags/v1.2.2
-git push origin :refs/tags/v1.2.3
-
-# Tag HEAD as v1.2.2
-git tag v1.2.2 39ac645
-git push origin v1.2.2
+cd c:/xampp/htdocs/wp-client-tour
+python3 -c "
+import zipfile, os
+plugin_src = 'plugin/wp-client-tour'
+exclude = {'tours/.gitkeep', 'spacely-installer.php'}
+with zipfile.ZipFile('wp-client-tour.zip', 'w', zipfile.ZIP_DEFLATED) as zf:
+    for root, dirs, files in os.walk(plugin_src):
+        dirs[:] = [d for d in dirs if not d.startswith('.')]
+        for f in files:
+            full = os.path.join(root, f)
+            rel = os.path.relpath(full, plugin_src).replace(os.sep, '/')
+            if rel not in exclude:
+                zf.write(full, 'wp-client-tour/' + rel)
+"
 ```
-
-Then create a GitHub release for v1.2.2.
 
 ---
 
 ## What Exists
 
 - Full plugin: `plugin/wp-client-tour/` — PHP, JS, CSS complete and E2E tested
+- `plugin/wp-client-tour/readme.txt` — WordPress.org format readme
+- `.distignore` — documents what to exclude from zip builds
+- `wp-client-tour.zip` — current submission zip (gitignored)
 - `skill/wp-client-tour.md` — Claude Code skill
 - `skill/prompt.md` — LLM-agnostic standalone authoring prompt
 - `skill/examples/` — three example tours + multipage example
@@ -71,8 +72,11 @@ Then create a GitHub release for v1.2.2.
 
 ## Session Summaries
 
+### Session 11 (2026-05-06): WordPress.org submission
+Fixed all Plugin Check errors (inline esc_url/esc_html in printf, NoCaching phpcs:ignore on bulk DB deletes). Renamed plugin to "Client Tour" — WordPress.org rejects "wp" and "wordpress" in plugin names. Updated text domain from wp-client-tour to client-tour throughout all PHP files. Fixed broken GitHub tags (deleted bad v1.2.2/v1.2.3, retagged HEAD as v1.2.2). Created GitHub release v1.2.2 with zip attached. Submitted to WordPress.org — slug client-tour assigned. Clip-path highlight fix verified in-browser on brauwerk-hoffman.
+
 ### Session 10 (2026-05-03): Community health files
-Added CONTRIBUTING.md (stack constraints, PR workflow) and .github/ISSUE_TEMPLATE/bug_report.md. Community health score was 37% — both files improve it. No traffic from posts yet (all uniques=1, only May 2 activity).
+Added CONTRIBUTING.md (stack constraints, PR workflow) and .github/ISSUE_TEMPLATE/bug_report.md. Community health score was 37% — both files improve it.
 
 ### Session 9 (2026-05-03): Demo video, README embed
 Processed screen recording into demo.gif (613KB) and demo.mp4 (228KB). Embedded GIF in README between intro and Table of Contents. Committed and pushed.
