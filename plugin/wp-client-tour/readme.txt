@@ -1,8 +1,8 @@
-=== Client Tour ===
+=== Kingsbury Client Tour ===
 Contributors: robkingsbury
 Tags: onboarding, guided tour, client handoff, help, training
 Requires at least: 6.0
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 Stable tag: 1.2.2
 License: MIT
@@ -109,6 +109,16 @@ Basic functionality works on multisite, but it has not been formally tested acro
 = Where do I report bugs or request features? =
 
 GitHub: https://github.com/kingsbury-labs/wp-client-tour/issues
+
+== External Services ==
+
+This plugin optionally checks for updates by calling the GitHub Releases API. This only happens when an admin visits the plugin settings page and clicks "Check for Updates," or on a background transient refresh (once every 12 hours at most).
+
+What is sent: a standard HTTP GET request with a User-Agent header identifying the plugin name and version. No user data, site URL, or personally identifiable information is transmitted.
+
+Service: GitHub REST API, provided by GitHub, Inc.
+Terms of Service: https://docs.github.com/en/site-policy/github-terms/github-terms-of-service
+Privacy Policy: https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
 
 == Screenshots ==
 

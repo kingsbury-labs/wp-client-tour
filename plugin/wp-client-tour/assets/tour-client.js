@@ -1,8 +1,8 @@
-/* global wpClientTour */
+/* global wctTourData */
 ( function () {
 	'use strict';
 
-	const config = window.wpClientTour;
+	const config = window.wctTourData;
 	if ( ! config || ! Array.isArray( config.tours ) || config.tours.length === 0 ) {
 		return;
 	}

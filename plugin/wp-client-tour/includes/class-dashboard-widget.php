@@ -10,6 +10,38 @@ class WCT_Dashboard_Widget {
 	 */
 	public static function init(): void {
 		add_action( 'wp_dashboard_setup', array( self::class, 'register_widget' ) );
+		add_action( 'admin_enqueue_scripts', array( self::class, 'enqueue_styles' ) );
+	}
+
+	/**
+	 * Enqueue dashboard widget styles via wp_add_inline_style.
+	 */
+	public static function enqueue_styles(): void {
+		$screen = get_current_screen();
+		if ( ! $screen || 'dashboard' !== $screen->id ) {
+			return;
+		}
+		wp_register_style( 'wct-dashboard-widget', false, array(), WCT_VERSION ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingSrc
+		wp_enqueue_style( 'wct-dashboard-widget' );
+		wp_add_inline_style(
+			'wct-dashboard-widget',
+			'.wct-widget-list { list-style: none; margin: 0; padding: 0; }
+			.wct-widget-item {
+				display: flex; align-items: center; justify-content: space-between;
+				padding: 8px 0; border-bottom: 1px solid #f0f0f1;
+				gap: 12px;
+			}
+			.wct-widget-item:last-child { border-bottom: none; }
+			.wct-widget-item-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+			.wct-widget-check {
+				width: 18px; height: 18px; flex-shrink: 0;
+				border-radius: 50%; border: 2px solid #c3c4c7;
+				display: flex; align-items: center; justify-content: center;
+			}
+			.wct-widget-check.done { background: #00a32a; border-color: #00a32a; color: #fff; font-size: 11px; }
+			.wct-widget-label { font-size: 13px; color: #1d2327; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+			.wct-widget-start { flex-shrink: 0; font-size: 12px; padding: 3px 10px; text-decoration: none; }'
+		);
 	}
 
 	/**
@@ -18,7 +50,7 @@ class WCT_Dashboard_Widget {
 	public static function register_widget(): void {
 		wp_add_dashboard_widget(
 			'wct_tour_launcher',
-			__( 'Your Help Tours', 'client-tour' ),
+			__( 'Your Help Tours', 'kingsbury-client-tour' ),
 			array( self::class, 'render_widget' )
 		);
 	}
@@ -46,31 +78,9 @@ class WCT_Dashboard_Widget {
 		);
 
 		if ( empty( $eligible ) ) {
-			echo '<p>' . esc_html__( 'No tours available for your account.', 'client-tour' ) . '</p>';
+			echo '<p>' . esc_html__( 'No tours available for your account.', 'kingsbury-client-tour' ) . '</p>';
 			return;
 		}
-
-		echo '<style>
-		.wct-widget-list { list-style: none; margin: 0; padding: 0; }
-		.wct-widget-item {
-			display: flex; align-items: center; justify-content: space-between;
-			padding: 8px 0; border-bottom: 1px solid #f0f0f1;
-			gap: 12px;
-		}
-		.wct-widget-item:last-child { border-bottom: none; }
-		.wct-widget-item-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
-		.wct-widget-check {
-			width: 18px; height: 18px; flex-shrink: 0;
-			border-radius: 50%; border: 2px solid #c3c4c7;
-			display: flex; align-items: center; justify-content: center;
-		}
-		.wct-widget-check.done { background: #00a32a; border-color: #00a32a; color: #fff; font-size: 11px; }
-		.wct-widget-label { font-size: 13px; color: #1d2327; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-		.wct-widget-start {
-			flex-shrink: 0; font-size: 12px; padding: 3px 10px;
-			text-decoration: none;
-		}
-		</style>';
 
 		echo '<ul class="wct-widget-list">';
 		foreach ( $eligible as $tour ) {
@@ -90,7 +100,7 @@ class WCT_Dashboard_Widget {
 			printf(
 				'<a href="%s" class="button button-small wct-widget-start">%s</a>',
 				esc_url( $launch_url ),
-				esc_html( $is_done ? __( 'Replay', 'client-tour' ) : __( 'Start', 'client-tour' ) )
+				esc_html( $is_done ? __( 'Replay', 'kingsbury-client-tour' ) : __( 'Start', 'kingsbury-client-tour' ) )
 			);
 			echo '</li>';
 		}

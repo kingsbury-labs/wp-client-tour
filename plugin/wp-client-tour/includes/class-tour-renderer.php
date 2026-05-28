@@ -46,11 +46,11 @@ class WCT_Tour_Renderer {
 
 		wp_localize_script(
 			'wct-tour-client',
-			'wpClientTour',
+			'wctTourData',
 			array(
 				'tours'       => array_map( array( self::class, 'strip_tour_for_js' ), $tours ),
 				'nonce'       => wp_create_nonce( 'wp_rest' ),
-				'restUrl'     => rest_url( 'wp-client-tour/v1/complete' ),
+				'restUrl'     => rest_url( 'wct/v1/complete' ),
 				'adminUrl'    => admin_url(),
 				'currentPage' => self::get_current_admin_page(),
 			)
@@ -125,7 +125,7 @@ class WCT_Tour_Renderer {
 	 */
 	public static function register_rest_routes(): void {
 		register_rest_route(
-			'wp-client-tour/v1',
+			'wct/v1',
 			'/complete',
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
