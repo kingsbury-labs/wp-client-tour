@@ -1,37 +1,30 @@
 ---
 project: wp-client-tour
-session: 12
-last_updated: 2026-05-06
-continue_with: "Wait for WordPress.org review email. Address any reviewer feedback."
-blockers: "None. Plugin is submitted and awaiting review."
+session: 13
+last_updated: 2026-05-31
+continue_with: "Wait for WordPress.org to confirm domain verification and approve slug change to kingsbury-client-tour."
+blockers: "None. DNS TXT record added and reply sent. Awaiting reviewer response."
 ---
 
 # WP Client Tour — Handoff
 
 ## Status
 
-Plugin submitted to WordPress.org on 2026-05-06. Slug assigned: `client-tour`. Awaiting manual review (285 plugins in queue, 1-14 days).
+Plugin under active review at WordPress.org. Slug currently `client-tour`, slug change to `kingsbury-client-tour` requested. Domain verification (DNS TXT) completed. Updated zip `wp-client-tour-v2.zip` uploaded.
 
 GitHub release v1.2.2 is live: https://github.com/kingsbury-labs/wp-client-tour/releases/tag/v1.2.2
 
 ---
 
-## If the Reviewer Requests Changes
+## Rebuild the Zip
 
-Common reviewer requests and how to handle them:
-
-- **Security issue** — fix the flagged code, rebuild the zip, upload via the "Upload updated plugin" button on the submission page
-- **Slug conflict** — if `client-tour` is taken, choose a new slug (e.g. `guided-client-tour`, `wct-guided-tours`) and contact WordPress.org before they close the ticket
-- **Readme issues** — edit `plugin/wp-client-tour/readme.txt`, commit, rebuild zip, reupload
-
-To rebuild the zip after any changes:
 ```bash
 cd c:/xampp/htdocs/wp-client-tour
 python3 -c "
 import zipfile, os
 plugin_src = 'plugin/wp-client-tour'
 exclude = {'tours/.gitkeep', 'spacely-installer.php'}
-with zipfile.ZipFile('wp-client-tour.zip', 'w', zipfile.ZIP_DEFLATED) as zf:
+with zipfile.ZipFile('wp-client-tour-v2.zip', 'w', zipfile.ZIP_DEFLATED) as zf:
     for root, dirs, files in os.walk(plugin_src):
         dirs[:] = [d for d in dirs if not d.startswith('.')]
         for f in files:
@@ -49,12 +42,11 @@ with zipfile.ZipFile('wp-client-tour.zip', 'w', zipfile.ZIP_DEFLATED) as zf:
 - Full plugin: `plugin/wp-client-tour/` — PHP, JS, CSS complete and E2E tested
 - `plugin/wp-client-tour/readme.txt` — WordPress.org format readme
 - `.distignore` — documents what to exclude from zip builds
-- `wp-client-tour.zip` — current submission zip (gitignored)
+- `wp-client-tour-v2.zip` — current submission zip (gitignored)
 - `skill/wp-client-tour.md` — Claude Code skill
 - `skill/prompt.md` — LLM-agnostic standalone authoring prompt
 - `skill/examples/` — three example tours + multipage example
 - `docs/index.html` — GitHub Pages landing page (live)
-- `demo.gif`, `demo.mp4` — screen recording of plugin in action
 - `README.md`, `SPEC.md`, `CHANGELOG.md`, `ROADMAP.md`, `LICENSE`
 
 ---
@@ -67,16 +59,14 @@ with zipfile.ZipFile('wp-client-tour.zip', 'w', zipfile.ZIP_DEFLATED) as zf:
 - Plugin path on both: `wp-content/plugins/wp-client-tour/`
 - Credentials: `c:/xampp/htdocs/.credentials/wordpress-demo.md`, `c:/xampp/htdocs/.credentials/brauwerk.md`
 - GitHub: `https://github.com/kingsbury-labs/wp-client-tour`
+- DNS managed via WHC cPanel API (`c:/xampp/htdocs/.credentials/whc-hosting.md`)
 
 ---
 
 ## Session Summaries
 
+### Session 13 (2026-05-31): Reviewer feedback round 2 + DNS verification
+Addressed all reviewer feedback: renamed to "Kingsbury Client Tour" (slug: kingsbury-client-tour), text domain updated throughout, dashboard widget CSS converted to wp_add_inline_style(), JS variable renamed to wctTourData, REST namespace changed to wct/v1, External Services section added to readme.txt, Tested up to updated to 7.0. Added DNS TXT record `wordpressorg-robkingsbury-verification` to kingsburycreative.com via WHC cPanel API. Replied to reviewer. Awaiting approval.
+
 ### Session 11 (2026-05-06): WordPress.org submission
-Fixed all Plugin Check errors (inline esc_url/esc_html in printf, NoCaching phpcs:ignore on bulk DB deletes). Renamed plugin to "Client Tour" — WordPress.org rejects "wp" and "wordpress" in plugin names. Updated text domain from wp-client-tour to client-tour throughout all PHP files. Fixed broken GitHub tags (deleted bad v1.2.2/v1.2.3, retagged HEAD as v1.2.2). Created GitHub release v1.2.2 with zip attached. Submitted to WordPress.org — slug client-tour assigned. Clip-path highlight fix verified in-browser on brauwerk-hoffman.
-
-### Session 10 (2026-05-03): Community health files
-Added CONTRIBUTING.md (stack constraints, PR workflow) and .github/ISSUE_TEMPLATE/bug_report.md. Community health score was 37% — both files improve it.
-
-### Session 9 (2026-05-03): Demo video, README embed
-Processed screen recording into demo.gif (613KB) and demo.mp4 (228KB). Embedded GIF in README between intro and Table of Contents. Committed and pushed.
+Fixed all Plugin Check errors. Renamed plugin to "Client Tour". Updated text domain to client-tour throughout. Fixed broken GitHub tags. Created GitHub release v1.2.2. Submitted to WordPress.org — slug client-tour assigned.

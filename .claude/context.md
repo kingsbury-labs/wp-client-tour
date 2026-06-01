@@ -1,13 +1,13 @@
 ---
 project: wp-client-tour
-session: 12
-last_updated: 2026-05-06
-phase: "Submitted to WordPress.org plugin directory. Awaiting review. v1.2.2 tagged and released on GitHub."
-continue_with: "Wait for WordPress.org review email. Address any reviewer feedback."
-blockers: "None. Awaiting WordPress.org review (285 plugins in queue, 1-14 days)."
+session: 13
+last_updated: 2026-05-31
+phase: "Under review at WordPress.org. DNS verified. Slug change to kingsbury-client-tour requested. Awaiting approval."
+continue_with: "Wait for WordPress.org to confirm domain verification and approve slug change."
+blockers: "None. Ball is in WordPress.org's court."
 
 tech:
-  product_name: WP Client Tour
+  product_name: Kingsbury Client Tour
   type: Open source WordPress plugin + LLM-agnostic authoring skill
   plugin_language: PHP 7.4+
   plugin_js: Vanilla ES6 (no build step)
@@ -40,21 +40,20 @@ tech:
 - z-index: modal at 10001, targets at 10000, stays below adminbar (99999)
 - Open source, MIT license, GitHub: kingsbury-labs/wp-client-tour
 - Manual triggers: admin bar Tours menu, [wct_launch] shortcode, wct_tour_launch_url() helper, all in class-manual-trigger.php
-- WordPress.org submission name: "Client Tour", slug: client-tour, text domain: client-tour
+- WordPress.org submission name: "Kingsbury Client Tour", requested slug: kingsbury-client-tour, text domain: kingsbury-client-tour
+- Author URI changed to https://github.com/robkingsbury (avoids domain verification requirement)
+- DNS TXT record `wordpressorg-robkingsbury-verification` added to kingsburycreative.com (WHC cPanel API)
 
 ## Recent sessions
 
+### Session 13 (2026-05-31): Reviewer feedback + DNS verification
+Renamed to "Kingsbury Client Tour", text domain kingsbury-client-tour throughout. Dashboard widget CSS to wp_add_inline_style(). JS var renamed to wctTourData, REST namespace to wct/v1. External Services + Tested up to 7.0 in readme.txt. Added WordPress.org DNS TXT verification record to kingsburycreative.com via WHC cPanel API. Uploaded zip, replied to reviewer.
+
+### Session 12 (2026-05-29): Reviewer feedback round 1
+Received reviewer email requesting slug rename, inline style fix, JS var rename. Applied all fixes, rebuilt zip as wp-client-tour-v2.zip, uploaded to WordPress.org, replied to review email.
+
 ### Session 11 (2026-05-06): WordPress.org submission
-Fixed all Plugin Check errors (output escaping, phpcs:ignore on DB queries). Renamed plugin from "WP Client Tour" to "Client Tour" (WP.org restriction on "wp"/"wordpress" in names). Updated text domain from wp-client-tour to client-tour throughout. Fixed broken GitHub tags (v1.2.2/v1.2.3 deleted, HEAD retagged as v1.2.2). Created GitHub release v1.2.2 with zip. Submitted to wordpress.org/plugins — assigned slug client-tour, awaiting review. Clip-path highlight fix verified in-browser on brauwerk-hoffman.
-
-### Session 10 (2026-05-03): Community health files
-Added CONTRIBUTING.md and .github/ISSUE_TEMPLATE/bug_report.md. Community health was 37%. Checked traffic — no external visitors yet, all activity is owner.
-
-### Session 9 (2026-05-03): Demo video, README embed
-Processed original screen recording into demo.gif (613KB, 800x592, 15fps) and demo.mp4 (228KB, 1280x952, 30fps, no audio, faststart). Embedded GIF in README between intro and Table of Contents. Committed and pushed all three files.
-
-### Session 8 (2026-05-03): Broken patch attempts, clip-path fix shipped
-Multiple broken highlight patches reverted. Clip-path overlay approach implemented — overlay cuts a hole at target bounding rect instead of lifting target z-index.
+Fixed all Plugin Check errors. Renamed to "Client Tour". Updated text domain. Fixed GitHub tags. Created release v1.2.2. Submitted — slug client-tour assigned.
 
 ## Reference
 

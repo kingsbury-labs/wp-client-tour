@@ -5,7 +5,7 @@
  * Description: AI-authored guided help tours for your clients inside wp-admin. Zero dependencies, role-aware, set-and-forget.
  * Version:     1.2.2
  * Author:      Rob Kingsbury
- * Author URI:  https://kingsburycreative.com
+ * Author URI:  https://github.com/robkingsbury
  * License:     MIT
  * Text Domain: kingsbury-client-tour
  */
